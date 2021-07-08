@@ -2,6 +2,7 @@
 [![Code Coverage](https://codecov.io/gh/scarabsoft/go-hamcrest/branch/main/graph/badge.svg)](https://codecov.io/gh/scarabsoft/go-hamcrest)
 [![Go Report Card](https://goreportcard.com/badge/github.com/scarabsoft/go-hamcrest)](https://goreportcard.com/report/github.com/scarabsoft/go-hamcrest)
 [![Go Reference](https://pkg.go.dev/badge/github.com/scarabsoft/go-hamcrest.svg)](https://pkg.go.dev/github.com/scarabsoft/go-hamcrest)
+[![GitHub license](https://img.shields.io/github/license/scarabsoft/go-hamcrest.svg)](https://github.com/scarabsoft/go-hamcrest/blob/main/LICENSE)
 
 I am about to do my first steps with Go, so please don't expect this to be idiomatic. 
 Coming from the Java Enterprise world(T_x). I am used to working with the hamcrest matcher framework, 
