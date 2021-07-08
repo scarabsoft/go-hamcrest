@@ -6,7 +6,7 @@
 
 I am about to do my first steps with Go, so please don't expect this to be idiomatic. 
 Coming from the Java Enterprise world(T_x). I am used to working with the hamcrest matcher framework, 
-which makes it easy (at least for me) to write readable assertions. Maybe someone else finds this useful to.
+which makes it easy (at least for me) to write readable assertions. Maybe someone else finds this useful too.
 
 **Contributions and Feedback are welcome.**
 
@@ -19,7 +19,8 @@ assert := hamcrest.NewAssertion(t)
 require := hamcrest.NewRequirement(t)
 ```
 
-Can be used interchangeably - the only difference is that a requirement stops the test case in case of a failing matcher.
+Can be used interchangeably - the only difference is that a requirement stops the test case in case of a failing matcher,
+whereas an assertion continues with the test execution.
 
 ## Matcher 
 
