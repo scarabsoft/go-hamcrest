@@ -3,6 +3,7 @@ package internal
 import (
 	"fmt"
 	"testing"
+	"time"
 )
 
 func TestIsLessThan(t *testing.T) {
@@ -72,6 +73,10 @@ func TestIsLessThan(t *testing.T) {
 		{actual: false, given: true, expectedToMatch: true},
 		{actual: true, given: false, expectedToMatch: false},
 		{actual: true, given: true, expectedToMatch: false},
+
+		{actual: 1 * time.Second, given: 1 * time.Minute, expectedToMatch: true},
+		{actual: 1 * time.Minute, given: 1 * time.Minute, expectedToMatch: false},
+		{actual: 1 * time.Minute, given: 1 * time.Second, expectedToMatch: false},
 	}
 
 	for idx, testCase := range testCases {
@@ -149,6 +154,10 @@ func TestIsLessThanEqual(t *testing.T) {
 		{actual: false, given: true, expectedToMatch: true},
 		{actual: true, given: false, expectedToMatch: false},
 		{actual: true, given: true, expectedToMatch: true},
+
+		{actual: 1 * time.Second, given: 1 * time.Minute, expectedToMatch: true},
+		{actual: 1 * time.Minute, given: 1 * time.Minute, expectedToMatch: true},
+		{actual: 1 * time.Minute, given: 1 * time.Second, expectedToMatch: false},
 	}
 
 	for idx, testCase := range testCases {

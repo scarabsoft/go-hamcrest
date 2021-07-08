@@ -108,16 +108,25 @@ func Key(given interface{}) matcher.Matcher {
 				Add(matcher.FailIfRestrictedType("actual", actual, internal.NewRestrictedToKind(reflect.Map))).
 				Add(func() matcher.MatchResult {
 					actualValue := reflect.ValueOf(actual)
-					for _, key := range actualValue.MapKeys() {
-						if internal.IsEqual(key.Interface(), given) {
-							return matcher.Matched()
-						}
+					givenValue := reflect.ValueOf(given)
+
+					if reflect.TypeOf(actual).Key() != reflect.TypeOf(given) {
+						return matcher.Failed(fmt.Sprintf(
+							"want %s to be key of %s; but was not",
+							internal.FormatTypeWithValue(given),
+							internal.FormatTypeWithValue(actual),
+						))
 					}
-					return matcher.Failed(fmt.Sprintf(
-						"want %s to be key of %s; but was not",
-						internal.FormatTypeWithValue(given),
-						internal.FormatTypeWithValue(actual),
-					))
+
+					valueVal := actualValue.MapIndex(givenValue)
+					if valueVal.Kind().String() == "invalid" {
+						return matcher.Failed(fmt.Sprintf(
+							"want %s to be key of %s; but was not",
+							internal.FormatTypeWithValue(given),
+							internal.FormatTypeWithValue(actual),
+						))
+					}
+					return matcher.Matched()
 				})
 		},
 	)

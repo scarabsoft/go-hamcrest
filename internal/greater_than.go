@@ -1,6 +1,9 @@
 package internal
 
-import "reflect"
+import (
+	"reflect"
+	"time"
+)
 
 // IsGreaterThan only supports numeric, string and boolean values
 func IsGreaterThan(actual, given interface{}) bool {
@@ -23,6 +26,8 @@ func IsGreaterThan(actual, given interface{}) bool {
 		return actualValue.String() > givenValue.String()
 	case bool:
 		return convertBoolToInt(actualValue.Bool()) > convertBoolToInt(givenValue.Bool())
+	case time.Duration:
+		return actual.(time.Duration).Microseconds() > given.(time.Duration).Microseconds()
 	}
 
 	return false
