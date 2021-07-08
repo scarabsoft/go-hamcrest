@@ -1,4 +1,5 @@
 # GO Hamcrest
+[![Code Coverage](https://codecov.io/gh/scarabsoft/go-hamcrest/branch/main/graph/badge.svg)](https://codecov.io/gh/scarabsoft/go-hamcrest)
 
 I am about to do my first steps with Go, so please don't expect this to be idiomatic. 
 Coming from the Java Enterprise world(T_x). I am used to working with the hamcrest matcher framework, 
