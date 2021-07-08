@@ -2,51 +2,46 @@ package is
 
 import (
 	"fmt"
+	"github.com/scarabsoft/go-hamcrest/internal"
 	"github.com/scarabsoft/go-hamcrest/matcher"
 	"regexp"
 )
 
-func MatchingPattern(pattern interface{}) matcher.Matcher {
-	return matcher.New(
-		func(actual interface{}, chain matcher.Chain) matcher.Chain {
-			return chain.Add(func() matcher.MatchResult {
-
-				var a string
-				switch tempActual := actual.(type) {
-				case string:
-					a = tempActual
-				case fmt.Stringer:
-					a = tempActual.String()
-				default:
-					return matcher.Failed("Unable to get string out of actual")
-				}
-
-				var p regexp.Regexp
-				switch temPattern := pattern.(type) {
-				case string:
-					p = *regexp.MustCompile(temPattern)
-				case regexp.Regexp:
-					p = temPattern
-				case *regexp.Regexp:
-					p = *temPattern
-				default:
-					return matcher.Failed("Dont know how to handle pattern!")
-				}
-
-				if p.MatchString(a) {
-					return matcher.Matched()
-				}
-
-				return matcher.Failed("did not match")
-			})
-		},
-	)
+func MatchingPattern(given interface{}) matcher.Matcher {
+	return matchingCheck(given, func(a string, g string) bool {
+		pattern := regexp.MustCompile(g)
+		return pattern.MatchString(a)
+	}, "want value to match %s; got %s")
 }
 
-func NotMatchingPattern(pattern interface{}) matcher.Matcher {
+func NotMatchingPattern(given interface{}) matcher.Matcher {
+	return matchingCheck(given, func(a string, g string) bool {
+		pattern := regexp.MustCompile(g)
+		return !pattern.MatchString(a)
+	}, "want value not to match %s; got %s")
+}
+
+func matchingCheck(given interface{}, fn func(string, string) bool, format string) matcher.Matcher {
 	return matcher.New(
 		func(actual interface{}, chain matcher.Chain) matcher.Chain {
-			panic("Implement me")
+			return chain.
+				Add(matcher.FailIfIsNil("actual", actual)).
+				Add(matcher.FailIfIsNil("given", given)).
+				Add(matcher.FailIfRestrictedType("actual", actual, internal.RestrictedToStringKind)).
+				Add(matcher.FailIfRestrictedType("given", given, internal.RestrictedToStringKind)).
+				Add(func() matcher.MatchResult {
+					actualString := actual.(string)
+					givenString := given.(string)
+					if !fn(actualString, givenString) {
+						return matcher.Failed(
+							fmt.Sprintf(format,
+								givenString,
+								actualString,
+							),
+						)
+					}
+					return matcher.Matched()
+				})
 		},
 	)
 }

@@ -3,7 +3,6 @@ package is_test
 import (
 	"github.com/scarabsoft/go-hamcrest"
 	"github.com/scarabsoft/go-hamcrest/is"
-	"regexp"
 	"testing"
 )
 
@@ -87,7 +86,7 @@ func TestPointingTo(t *testing.T) {
 		matched := matcher.Matches(anotherPtr)
 
 		assert.That(matched, is.False())
-		assert.That(matcher.Cause(), is.MatchingPattern(*regexp.MustCompile(`to\s\*int\([a-zA-z0-9]*\);\sgot\s\*int\([a-zA-z0-9]*\)`)))
+		assert.That(matcher.Cause(), is.MatchingPattern(`to\s\*int\([a-zA-z0-9]*\);\sgot\s\*int\([a-zA-z0-9]*\)`))
 	})
 
 	t.Run("different_types", func(t *testing.T) {
