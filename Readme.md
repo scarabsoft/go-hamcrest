@@ -1,12 +1,11 @@
 # GO Hamcrest
 
-I am about to do my first steps with Go, so please don't expect this to be idomatic. 
-Coming from the Java Enterprise world(T_x). I am used to work with the hamcrest framework, which makes it easy to write
-readable assertions. Maybe someone else finds this useful to.
+I am about to do my first steps with Go, so please don't expect this to be idiomatic. 
+Coming from the Java Enterprise world(T_x). I am used to working with the hamcrest matcher framework, 
+which makes it easy (at least for me) to write readable assertions. Maybe someone else finds this useful to.
 
 **Contributions and Feedback are welcome.**
 
-  
 
 ## Assertions / Requirements
 
@@ -75,11 +74,6 @@ assert.That(actual, has.Length(3))
 
 assert.That(actual, is.Empty())
 assert.That(actual, is.NotEmpty())
-
-assert.That(actual, is.GreaterThan(10))
-assert.That(actual, is.GreaterThanEqual(10))
-assert.That(actual, is.LessThan(10))
-assert.That(actual, is.LessThanEqual(10))
 ```
 
 ### Collections
@@ -115,28 +109,18 @@ assert.That(actual, is.NotOk())
 
 ```
 
-### Error
-```go
-assert := hamcrest.NewAssertion(t)
-
-err := someFunction()
-
-assert.Error(err)
-assert.NoError(err)
-```
-
 ### Time
 ```go
 assert := hamcrest.NewAssertion(t)
 
 assert.That(actual, is.Before(given))
 assert.That(actual, is.NotBefore(given))
+assert.That(actual, is.BeforeOrEqual(given))
 
 assert.That(actual, is.After(given))
 assert.That(actual, is.NotAfter(given))
+assert.That(actual, is.AfterOrEqual(given))
 
-assert.That(actual, is.Between(min, max))
-assert.That(actual, is.NotBetween(min, max))
 ```
 
 ### Type
