@@ -1,6 +1,8 @@
 package is
 
-import "github.com/scarabsoft/go-hamcrest/matcher"
+import (
+	"github.com/scarabsoft/go-hamcrest/matcher"
+)
 
 func Before(given interface{}) matcher.Matcher {
 	return matcher.New(

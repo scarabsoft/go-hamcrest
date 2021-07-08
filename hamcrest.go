@@ -2,7 +2,6 @@ package hamcrest
 
 import (
 	"fmt"
-	"github.com/scarabsoft/go-hamcrest/is"
 	"github.com/scarabsoft/go-hamcrest/matcher"
 	"strings"
 	"testing"
@@ -36,14 +35,6 @@ type Assertion struct {
 	t *testing.T
 }
 
-type Requirement struct {
-	t *testing.T
-}
-
-func NewRequirement(t *testing.T) *Requirement {
-	return &Requirement{t}
-}
-
 func NewAssertion(t *testing.T) *Assertion {
 	return &Assertion{t}
 }
@@ -55,24 +46,21 @@ func (a *Assertion) That(actual interface{}, matcher matcher.Matcher, messages .
 	}
 	return matcher
 }
-func (a *Assertion) True(value bool) matcher.Matcher {
-	a.t.Helper()
-	return a.That(value, is.True())
+
+type Requirement struct {
+	t *testing.T
 }
 
-func (a *Assertion) False(value bool) matcher.Matcher {
-	a.t.Helper()
-	return a.That(value, is.False())
+func NewRequirement(t *testing.T) *Requirement {
+	return &Requirement{t}
 }
 
-func (a *Assertion) NoError(err error) {
-	a.t.Helper()
-	a.That(err, is.Nil())
-}
-
-func (a *Assertion) Error(err error) {
-	a.t.Helper()
-
+func (r *Requirement) That(actual interface{}, matcher matcher.Matcher, messages ...MessageInterface) matcher.Matcher {
+	r.t.Helper()
+	if !matcher.Matches(actual) {
+		r.t.Fatal(generateErrorMessage(matcher, messages...))
+	}
+	return matcher
 }
 
 func generateErrorMessage(matcher matcher.Matcher, messages ...MessageInterface) string {

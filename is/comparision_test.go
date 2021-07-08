@@ -1032,7 +1032,7 @@ func TestCloseTo(t *testing.T) {
 
 		matcher := is.CloseTo(4.0, 0.5)
 		matched := matcher.Matches(4.6)
-		assert.False(matched)
+		assert.That(matched, is.False())
 		assert.That(matcher.Cause(), is.EqualTo("want value close to float64(4) with error float64(0.5); got float64(4.6)"))
 	})
 
@@ -1055,7 +1055,7 @@ func TestCloseTo(t *testing.T) {
 
 		matcher := is.CloseTo(4.0, 0.5)
 		matched := matcher.Matches(3.4)
-		assert.False(matched)
+		assert.That(matched, is.False())
 		assert.That(matcher.Cause(), is.EqualTo("want value close to float64(4) with error float64(0.5); got float64(3.4)"))
 	})
 }
@@ -1149,7 +1149,7 @@ func TestNotCloseTo(t *testing.T) {
 
 		matcher := is.NotCloseTo(4.0, 0.5)
 		matched := matcher.Matches(4.5)
-		assert.False(matched)
+		assert.That(matched, is.False())
 		assert.That(matcher.Cause(), is.EqualTo("want value not close to float64(4) with error float64(0.5); got float64(4.5)"))
 	})
 
@@ -1158,7 +1158,7 @@ func TestNotCloseTo(t *testing.T) {
 
 		matcher := is.NotCloseTo(4.0, 0.5)
 		matched := matcher.Matches(3.5)
-		assert.False(matched)
+		assert.That(matched, is.False())
 		assert.That(matcher.Cause(), is.EqualTo("want value not close to float64(4) with error float64(0.5); got float64(3.5)"))
 	})
 

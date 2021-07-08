@@ -31,7 +31,3 @@ func PointingTo(given interface{}) matcher.Matcher {
 			})
 	})
 }
-
-func NotPointingTo(given interface{}) matcher.Matcher {
-	panic("implement me")
-}

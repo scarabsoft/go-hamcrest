@@ -11,7 +11,7 @@ func TestEmpty(t *testing.T) {
 		assert := hamcrest.NewAssertion(t)
 
 		matcher := is.Empty()
-		assert.False(matcher.Matches(nil))
+		assert.That(matcher.Matches(nil), is.False())
 		assert.That(matcher.Cause(), is.EqualTo("actual is <nil>"))
 	})
 
@@ -19,7 +19,7 @@ func TestEmpty(t *testing.T) {
 		assert := hamcrest.NewAssertion(t)
 
 		matcher := is.Empty()
-		assert.False(matcher.Matches([3]int{1, 2, 3}))
+		assert.That(matcher.Matches([3]int{1, 2, 3}), is.False())
 		assert.That(matcher.Cause(), is.EqualTo("want to be empty; got length 3"))
 	})
 
@@ -34,7 +34,7 @@ func TestEmpty(t *testing.T) {
 		assert := hamcrest.NewAssertion(t)
 
 		matcher := is.Empty()
-		assert.False(matcher.Matches("someString"))
+		assert.That(matcher.Matches("someString"), is.False())
 		assert.That(matcher.Cause(), is.EqualTo("want to be empty; got length 10"))
 	})
 
@@ -49,7 +49,7 @@ func TestEmpty(t *testing.T) {
 		assert := hamcrest.NewAssertion(t)
 
 		matcher := is.Empty()
-		assert.False(matcher.Matches([]int{1, 2, 3}))
+		assert.That(matcher.Matches([]int{1, 2, 3}), is.False())
 		assert.That(matcher.Cause(), is.EqualTo("want to be empty; got length 3"))
 	})
 
@@ -69,7 +69,7 @@ func TestEmpty(t *testing.T) {
 		assert := hamcrest.NewAssertion(t)
 
 		matcher := is.Empty()
-		assert.False(matcher.Matches(c))
+		assert.That(matcher.Matches(c), is.False())
 		assert.That(matcher.Cause(), is.EqualTo("want to be empty; got length 1"))
 	})
 }
@@ -79,7 +79,7 @@ func TestNotEmpty(t *testing.T) {
 		assert := hamcrest.NewAssertion(t)
 
 		matcher := is.NotEmpty()
-		assert.False(matcher.Matches(nil))
+		assert.That(matcher.Matches(nil), is.False())
 		assert.That(matcher.Cause(), is.EqualTo("actual is <nil>"))
 	})
 
@@ -94,7 +94,7 @@ func TestNotEmpty(t *testing.T) {
 		assert := hamcrest.NewAssertion(t)
 
 		matcher := is.NotEmpty()
-		assert.False(matcher.Matches(""))
+		assert.That(matcher.Matches(""), is.False())
 		assert.That(matcher.Cause(), is.EqualTo("want not to be empty; got empty"))
 	})
 
@@ -109,7 +109,7 @@ func TestNotEmpty(t *testing.T) {
 		assert := hamcrest.NewAssertion(t)
 
 		matcher := is.NotEmpty()
-		assert.False(matcher.Matches([]int{}))
+		assert.That(matcher.Matches([]int{}), is.False())
 		assert.That(matcher.Cause(), is.EqualTo("want not to be empty; got empty"))
 	})
 
@@ -126,7 +126,7 @@ func TestNotEmpty(t *testing.T) {
 		assert := hamcrest.NewAssertion(t)
 
 		matcher := is.NotEmpty()
-		assert.False(matcher.Matches(c))
+		assert.That(matcher.Matches(c), is.False())
 		assert.That(matcher.Cause(), is.EqualTo("want not to be empty; got empty"))
 	})
 

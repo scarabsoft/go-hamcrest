@@ -24,11 +24,4 @@ func TestAssertions(t *testing.T) {
 
 		assert.That(false, is.False())
 	})
-
-	//t.Run("assert that slice has lenght 3", func(t *testing.T) {
-	//	assert := hamcrest.NewAssertion(t)
-	//
-	//	var s = make([]string, 3)
-	//	assert.That(s, has.Length(3))
-	//})
 }

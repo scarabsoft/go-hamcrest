@@ -1,7 +1,24 @@
+# GO Hamcrest
 
+I am about to do my first steps with Go, so please don't expect this to be idomatic. 
+Coming from the Java Enterprise world(T_x). I am used to work with the hamcrest framework, which makes it easy to write
+readable assertions. Maybe someone else finds this useful to.
 
+**Contributions and Feedback are welcome.**
 
-## Assertions
+  
+
+## Assertions / Requirements
+
+```go
+assert := hamcrest.NewAssertion(t)
+
+require := hamcrest.NewRequirement(t)
+```
+
+Can be used interchangeably - the only difference is that a requirement stops the test case in case of a failing matcher.
+
+## Matcher 
 
 ### General
  
@@ -18,7 +35,6 @@ assert.That(actual, is.False())
 assert.That(actual, is.Nil())
 assert.That(actual, is.NotNil())
 assert.That(actual, is.PointingTo(givenPtr))
-assert.That(actual, is.NotPointingTo(givenPtr))
 ```
 
 ### Numeric 
@@ -98,8 +114,6 @@ assert.That(actual, is.Ok())
 assert.That(actual, is.NotOk())
 
 ```
-
-### Panic
 
 ### Error
 ```go

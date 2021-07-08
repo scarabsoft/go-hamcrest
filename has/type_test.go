@@ -37,7 +37,7 @@ func TestSameTypeAs(t *testing.T) {
 
 		matcher := has.SameTypeAs(42.42)
 
-		assert.False(matcher.Matches(1))
+		assert.That(matcher.Matches(1), is.False())
 		assert.That(matcher.Cause(), is.EqualTo("want same type as int; got float64"))
 	})
 
@@ -49,7 +49,7 @@ func TestSameTypeAs(t *testing.T) {
 
 		matcher := has.SameTypeAs(&someFloat)
 
-		assert.False(matcher.Matches(&someInt))
+		assert.That(matcher.Matches(&someInt), is.False())
 		assert.That(matcher.Cause(), is.EqualTo("want same type as *int; got *float64"))
 	})
 }
@@ -59,7 +59,7 @@ func TestNotSameTypeAs(t *testing.T) {
 		assert := hamcrest.NewAssertion(t)
 
 		matcher := has.NotSameTypeAs(nil)
-		assert.False(matcher.Matches(nil))
+		assert.That(matcher.Matches(nil), is.False())
 		assert.That(matcher.Cause(), is.EqualTo("want not same type as <nil>; got <nil>"))
 	})
 
@@ -67,7 +67,7 @@ func TestNotSameTypeAs(t *testing.T) {
 		assert := hamcrest.NewAssertion(t)
 
 		matcher := has.NotSameTypeAs(1337)
-		assert.False(matcher.Matches(42))
+		assert.That(matcher.Matches(42), is.False())
 		assert.That(matcher.Cause(), is.EqualTo("want not same type as int; got int"))
 	})
 
@@ -78,7 +78,7 @@ func TestNotSameTypeAs(t *testing.T) {
 		assert := hamcrest.NewAssertion(t)
 
 		matcher := has.NotSameTypeAs(&anotherInt)
-		assert.False(matcher.Matches(&someInt))
+		assert.That(matcher.Matches(&someInt), is.False())
 		assert.That(matcher.Cause(), is.EqualTo("want not same type as *int; got *int"))
 	})
 

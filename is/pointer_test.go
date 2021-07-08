@@ -102,7 +102,3 @@ func TestPointingTo(t *testing.T) {
 		assert.That(matcher.Cause(), is.MatchingPattern(`to\s\*float32\([a-zA-z0-9]*\);\sgot\s\*int\([a-zA-z0-9]*\)`))
 	})
 }
-
-func TestNotPointingTo(t *testing.T) {
-	panic("implement me")
-}
