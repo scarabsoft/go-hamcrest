@@ -15,7 +15,7 @@ func Length(length interface{}) matcher.Matcher {
 				Add(matcher.FailIfRestrictedType("length", length, internal.RestrictedToInteger)).
 				Add(matcher.FailIfIsNil("actual", actual)).
 				Add(matcher.FailIfRestrictedType("actual", actual, internal.NewRestrictedToKind(
-					reflect.Array, reflect.Chan, reflect.Map, reflect.String, reflect.Ptr)),
+					reflect.Array, reflect.Chan, reflect.Map, reflect.String, reflect.Slice, reflect.Ptr)),
 				).
 				Add(func() matcher.MatchResult {
 					var givenLength int64

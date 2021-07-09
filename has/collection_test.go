@@ -45,7 +45,7 @@ func TestLength(t *testing.T) {
 		matched := matcher.Matches(struct{}{})
 
 		assert.That(matched, is.False())
-		assert.That(matcher.Cause(), is.EqualTo("actual not one of [array,chan,map,string,ptr]"))
+		assert.That(matcher.Cause(), is.EqualTo("actual not one of [array,chan,map,string,slice,ptr]"))
 	})
 
 	t.Run("length_match_unsigned_integer_length", func(t *testing.T) {
