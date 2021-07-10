@@ -43,7 +43,7 @@ func (c *MatchResult) String() string {
 }
 
 type Chain interface {
-	Add(fn Function) Chain
+	Add(fns ...Function) Chain
 
 	Exec() MatchResult
 }
@@ -53,8 +53,8 @@ type matcherChainImpl struct {
 	functions    []Function
 }
 
-func (c *matcherChainImpl) Add(fn Function) Chain {
-	c.functions = append(c.functions, fn)
+func (c *matcherChainImpl) Add(fns ...Function) Chain {
+	c.functions = append(c.functions, fns...)
 	return c
 }
 

@@ -10,14 +10,15 @@ func SameTypeAs(given interface{}) matcher.Matcher {
 	return matcher.New(
 		func(actual interface{}, chain matcher.Chain) matcher.Chain {
 			return chain.
-				Add(matcher.MatchIfAllAreNil(actual, given)).
-				Add(func() matcher.MatchResult {
-					if reflect.TypeOf(actual) != reflect.TypeOf(given) {
-						return matcher.Failed(
-							fmt.Sprintf("want same type as %[1]T; got %[2]T", actual, given))
-					}
-					return matcher.Matched()
-				})
+				Add(
+					matcher.MatchIfAllAreNil(actual, given),
+					func() matcher.MatchResult {
+						if reflect.TypeOf(actual) != reflect.TypeOf(given) {
+							return matcher.Failed(
+								fmt.Sprintf("want same type as %[1]T; got %[2]T", actual, given))
+						}
+						return matcher.Matched()
+					})
 		},
 	)
 }

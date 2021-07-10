@@ -23,11 +23,12 @@ func Prefix(given string) matcher.Matcher {
 	return matcher.New(
 		func(actual interface{}, chain matcher.Chain) matcher.Chain {
 			return chain.
-				Add(matcher.FailIfIsNil("actual", actual)).
-				Add(matcher.FailIfNotRestrictedType("actual", actual, internal.RestrictedToStringKind)).
-				Add(stringMatcher(actual, given, func(a, g string) bool {
-					return !strings.HasPrefix(a, g)
-				}, "want %s to be prefix of %s; but was not"))
+				Add(
+					matcher.FailIfIsNil("actual", actual),
+					matcher.FailIfNotRestrictedType("actual", actual, internal.RestrictedToStringKind),
+					stringMatcher(actual, given, func(a, g string) bool {
+						return !strings.HasPrefix(a, g)
+					}, "want %s to be prefix of %s; but was not"))
 		},
 	)
 }
@@ -36,11 +37,12 @@ func NotPrefix(given string) matcher.Matcher {
 	return matcher.New(
 		func(actual interface{}, chain matcher.Chain) matcher.Chain {
 			return chain.
-				Add(matcher.FailIfIsNil("actual", actual)).
-				Add(matcher.FailIfNotRestrictedType("actual", actual, internal.RestrictedToStringKind)).
-				Add(stringMatcher(actual, given, func(a, g string) bool {
-					return strings.HasPrefix(a, g)
-				}, "want %s not to be prefix of %s; but was"))
+				Add(
+					matcher.FailIfIsNil("actual", actual),
+					matcher.FailIfNotRestrictedType("actual", actual, internal.RestrictedToStringKind),
+					stringMatcher(actual, given, func(a, g string) bool {
+						return strings.HasPrefix(a, g)
+					}, "want %s not to be prefix of %s; but was"))
 		},
 	)
 }
@@ -49,11 +51,12 @@ func Suffix(given string) matcher.Matcher {
 	return matcher.New(
 		func(actual interface{}, chain matcher.Chain) matcher.Chain {
 			return chain.
-				Add(matcher.FailIfIsNil("actual", actual)).
-				Add(matcher.FailIfNotRestrictedType("actual", actual, internal.RestrictedToStringKind)).
-				Add(stringMatcher(actual, given, func(a, g string) bool {
-					return !strings.HasSuffix(a, g)
-				}, "want %s to be suffix of %s; but was not"))
+				Add(
+					matcher.FailIfIsNil("actual", actual),
+					matcher.FailIfNotRestrictedType("actual", actual, internal.RestrictedToStringKind),
+					stringMatcher(actual, given, func(a, g string) bool {
+						return !strings.HasSuffix(a, g)
+					}, "want %s to be suffix of %s; but was not"))
 		},
 	)
 }
@@ -62,11 +65,12 @@ func NotSuffix(given string) matcher.Matcher {
 	return matcher.New(
 		func(actual interface{}, chain matcher.Chain) matcher.Chain {
 			return chain.
-				Add(matcher.FailIfIsNil("actual", actual)).
-				Add(matcher.FailIfNotRestrictedType("actual", actual, internal.RestrictedToStringKind)).
-				Add(stringMatcher(actual, given, func(a, g string) bool {
-					return strings.HasSuffix(a, g)
-				}, "want %s not to be suffix of %s; but was"))
+				Add(
+					matcher.FailIfIsNil("actual", actual),
+					matcher.FailIfNotRestrictedType("actual", actual, internal.RestrictedToStringKind),
+					stringMatcher(actual, given, func(a, g string) bool {
+						return strings.HasSuffix(a, g)
+					}, "want %s not to be suffix of %s; but was"))
 		},
 	)
 }

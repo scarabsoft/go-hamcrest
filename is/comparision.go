@@ -72,21 +72,22 @@ func numericStringBoolKindsComparisonMatcher(given interface{}, fn func(actual, 
 	return matcher.New(
 		func(actual interface{}, chain matcher.Chain) matcher.Chain {
 			return chain.
-				Add(matcher.FailIfIsNil("actual", actual)).
-				Add(matcher.FailIfIsNil("given", given)).
-				Add(matcher.FailIfNotRestrictedType("actual", actual, internal.RestrictedToNumericStringBoolKinds)).
-				Add(matcher.FailIfNotRestrictedType("given", given, internal.RestrictedToNumericStringBoolKinds)).
-				Add(matcher.FailIfNotSameType(actual, given)).
-				Add(func() matcher.MatchResult {
-					if !fn(actual, given) {
-						return matcher.Failed(fmt.Sprintf(
-							format,
-							internal.FormatTypeWithValue(given),
-							internal.FormatTypeWithValue(actual),
-						))
-					}
-					return matcher.Matched()
-				})
+				Add(
+					matcher.FailIfIsNil("actual", actual),
+					matcher.FailIfIsNil("given", given),
+					matcher.FailIfNotRestrictedType("actual", actual, internal.RestrictedToNumericStringBoolKinds),
+					matcher.FailIfNotRestrictedType("given", given, internal.RestrictedToNumericStringBoolKinds),
+					matcher.FailIfNotSameType(actual, given),
+					func() matcher.MatchResult {
+						if !fn(actual, given) {
+							return matcher.Failed(fmt.Sprintf(
+								format,
+								internal.FormatTypeWithValue(given),
+								internal.FormatTypeWithValue(actual),
+							))
+						}
+						return matcher.Matched()
+					})
 		},
 	)
 }
@@ -119,34 +120,35 @@ func numericRangeComparisonMatcher(givenMin, givenMax interface{}, fn func(actua
 	return matcher.New(
 		func(actual interface{}, chain matcher.Chain) matcher.Chain {
 			return chain.
-				Add(matcher.FailIfIsNil("actual", actual)).
-				Add(matcher.FailIfIsNil("givenMin", givenMin)).
-				Add(matcher.FailIfIsNil("givenMax", givenMax)).
-				Add(matcher.FailIfNotRestrictedType("actual", actual, internal.RestrictedToNumericKinds)).
-				Add(matcher.FailIfNotRestrictedType("givenMin", givenMin, internal.RestrictedToNumericKinds)).
-				Add(matcher.FailIfNotRestrictedType("givenMax", givenMax, internal.RestrictedToNumericKinds)).
-				Add(matcher.FailIfNotSameType(actual, givenMin)).
-				Add(matcher.FailIfNotSameType(actual, givenMax)).
-				Add(func() matcher.MatchResult {
-					if internal.IsLessThanEqual(givenMin, givenMax) {
-						return matcher.Next()
-					}
-					return matcher.Failed(fmt.Sprintf("givenMin %s must be <= givenMax %s",
-						internal.FormatTypeWithValue(givenMin),
-						internal.FormatTypeWithValue(givenMax),
-					))
-				}).
-				Add(func() matcher.MatchResult {
-					if !fn(actual, givenMin, givenMax) {
-						return matcher.Failed(fmt.Sprintf(
-							format,
+				Add(
+					matcher.FailIfIsNil("actual", actual),
+					matcher.FailIfIsNil("givenMin", givenMin),
+					matcher.FailIfIsNil("givenMax", givenMax),
+					matcher.FailIfNotRestrictedType("actual", actual, internal.RestrictedToNumericKinds),
+					matcher.FailIfNotRestrictedType("givenMin", givenMin, internal.RestrictedToNumericKinds),
+					matcher.FailIfNotRestrictedType("givenMax", givenMax, internal.RestrictedToNumericKinds),
+					matcher.FailIfNotSameType(actual, givenMin),
+					matcher.FailIfNotSameType(actual, givenMax),
+					func() matcher.MatchResult {
+						if internal.IsLessThanEqual(givenMin, givenMax) {
+							return matcher.Next()
+						}
+						return matcher.Failed(fmt.Sprintf("givenMin %s must be <= givenMax %s",
 							internal.FormatTypeWithValue(givenMin),
 							internal.FormatTypeWithValue(givenMax),
-							internal.FormatTypeWithValue(actual),
 						))
-					}
-					return matcher.Matched()
-				})
+					},
+					func() matcher.MatchResult {
+						if !fn(actual, givenMin, givenMax) {
+							return matcher.Failed(fmt.Sprintf(
+								format,
+								internal.FormatTypeWithValue(givenMin),
+								internal.FormatTypeWithValue(givenMax),
+								internal.FormatTypeWithValue(actual),
+							))
+						}
+						return matcher.Matched()
+					})
 		},
 	)
 }
@@ -200,28 +202,29 @@ func CloseTo(given, error interface{}) matcher.Matcher {
 	return matcher.New(
 		func(actual interface{}, chain matcher.Chain) matcher.Chain {
 			return chain.
-				Add(matcher.FailIfIsNil("actual", actual)).
-				Add(matcher.FailIfIsNil("given", given)).
-				Add(matcher.FailIfIsNil("error", error)).
-				Add(matcher.FailIfNotRestrictedType("actual", actual, internal.RestrictedToFloat)).
-				Add(matcher.FailIfNotRestrictedType("given", given, internal.RestrictedToFloat)).
-				Add(matcher.FailIfNotRestrictedType("error", error, internal.RestrictedToFloat)).
-				Add(matcher.FailIfNotSameType(actual, given)).
-				Add(matcher.FailIfNotSameType(actual, error)).
-				Add(func() matcher.MatchResult {
-					givenValue := given.(float64)
-					errorValue := error.(float64)
-					if !betweenOrEqual(actual, givenValue-errorValue, givenValue+errorValue) {
-						return matcher.Failed(
-							fmt.Sprintf("want value close to %s with error %s; got %s",
-								internal.FormatTypeWithValue(given),
-								internal.FormatTypeWithValue(error),
-								internal.FormatTypeWithValue(actual),
-							),
-						)
-					}
-					return matcher.Matched()
-				})
+				Add(
+					matcher.FailIfIsNil("actual", actual),
+					matcher.FailIfIsNil("given", given),
+					matcher.FailIfIsNil("error", error),
+					matcher.FailIfNotRestrictedType("actual", actual, internal.RestrictedToFloat),
+					matcher.FailIfNotRestrictedType("given", given, internal.RestrictedToFloat),
+					matcher.FailIfNotRestrictedType("error", error, internal.RestrictedToFloat),
+					matcher.FailIfNotSameType(actual, given),
+					matcher.FailIfNotSameType(actual, error),
+					func() matcher.MatchResult {
+						givenValue := given.(float64)
+						errorValue := error.(float64)
+						if !betweenOrEqual(actual, givenValue-errorValue, givenValue+errorValue) {
+							return matcher.Failed(
+								fmt.Sprintf("want value close to %s with error %s; got %s",
+									internal.FormatTypeWithValue(given),
+									internal.FormatTypeWithValue(error),
+									internal.FormatTypeWithValue(actual),
+								),
+							)
+						}
+						return matcher.Matched()
+					})
 		},
 	)
 }
@@ -230,28 +233,29 @@ func NotCloseTo(given, error interface{}) matcher.Matcher {
 	return matcher.New(
 		func(actual interface{}, chain matcher.Chain) matcher.Chain {
 			return chain.
-				Add(matcher.FailIfIsNil("actual", actual)).
-				Add(matcher.FailIfIsNil("given", given)).
-				Add(matcher.FailIfIsNil("error", error)).
-				Add(matcher.FailIfNotRestrictedType("actual", actual, internal.RestrictedToFloat)).
-				Add(matcher.FailIfNotRestrictedType("given", given, internal.RestrictedToFloat)).
-				Add(matcher.FailIfNotRestrictedType("error", error, internal.RestrictedToFloat)).
-				Add(matcher.FailIfNotSameType(actual, given)).
-				Add(matcher.FailIfNotSameType(actual, error)).
-				Add(func() matcher.MatchResult {
-					givenValue := given.(float64)
-					errorValue := error.(float64)
-					if betweenOrEqual(actual, givenValue-errorValue, givenValue+errorValue) {
-						return matcher.Failed(
-							fmt.Sprintf("want value not close to %s with error %s; got %s",
-								internal.FormatTypeWithValue(given),
-								internal.FormatTypeWithValue(error),
-								internal.FormatTypeWithValue(actual),
-							),
-						)
-					}
-					return matcher.Matched()
-				})
+				Add(
+					matcher.FailIfIsNil("actual", actual),
+					matcher.FailIfIsNil("given", given),
+					matcher.FailIfIsNil("error", error),
+					matcher.FailIfNotRestrictedType("actual", actual, internal.RestrictedToFloat),
+					matcher.FailIfNotRestrictedType("given", given, internal.RestrictedToFloat),
+					matcher.FailIfNotRestrictedType("error", error, internal.RestrictedToFloat),
+					matcher.FailIfNotSameType(actual, given),
+					matcher.FailIfNotSameType(actual, error),
+					func() matcher.MatchResult {
+						givenValue := given.(float64)
+						errorValue := error.(float64)
+						if betweenOrEqual(actual, givenValue-errorValue, givenValue+errorValue) {
+							return matcher.Failed(
+								fmt.Sprintf("want value not close to %s with error %s; got %s",
+									internal.FormatTypeWithValue(given),
+									internal.FormatTypeWithValue(error),
+									internal.FormatTypeWithValue(actual),
+								),
+							)
+						}
+						return matcher.Matched()
+					})
 		},
 	)
 }

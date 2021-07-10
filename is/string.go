@@ -25,23 +25,24 @@ func matchingCheck(given interface{}, fn func(string, string) bool, format strin
 	return matcher.New(
 		func(actual interface{}, chain matcher.Chain) matcher.Chain {
 			return chain.
-				Add(matcher.FailIfIsNil("actual", actual)).
-				Add(matcher.FailIfIsNil("given", given)).
-				Add(matcher.FailIfNotRestrictedType("actual", actual, internal.RestrictedToStringKind)).
-				Add(matcher.FailIfNotRestrictedType("given", given, internal.RestrictedToStringKind)).
-				Add(func() matcher.MatchResult {
-					actualString := actual.(string)
-					givenString := given.(string)
-					if !fn(actualString, givenString) {
-						return matcher.Failed(
-							fmt.Sprintf(format,
-								givenString,
-								actualString,
-							),
-						)
-					}
-					return matcher.Matched()
-				})
+				Add(
+					matcher.FailIfIsNil("actual", actual),
+					matcher.FailIfIsNil("given", given),
+					matcher.FailIfNotRestrictedType("actual", actual, internal.RestrictedToStringKind),
+					matcher.FailIfNotRestrictedType("given", given, internal.RestrictedToStringKind),
+					func() matcher.MatchResult {
+						actualString := actual.(string)
+						givenString := given.(string)
+						if !fn(actualString, givenString) {
+							return matcher.Failed(
+								fmt.Sprintf(format,
+									givenString,
+									actualString,
+								),
+							)
+						}
+						return matcher.Matched()
+					})
 		},
 	)
 }

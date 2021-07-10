@@ -49,24 +49,25 @@ func timeCheck(given interface{}, fn func(interface{}, interface{}) bool, format
 	return matcher.New(
 		func(actual interface{}, chain matcher.Chain) matcher.Chain {
 			return chain.
-				Add(matcher.FailIfIsNil("actual", actual)).
-				Add(matcher.FailIfIsNil("given", given)).
-				Add(failIfNotTimeType("actual", actual)).
-				Add(failIfNotTimeType("given", given)).
-				Add(func() matcher.MatchResult {
-					actualTime := actual.(time.Time)
-					givenTime := given.(time.Time)
+				Add(
+					matcher.FailIfIsNil("actual", actual),
+					matcher.FailIfIsNil("given", given),
+					failIfNotTimeType("actual", actual),
+					failIfNotTimeType("given", given),
+					func() matcher.MatchResult {
+						actualTime := actual.(time.Time)
+						givenTime := given.(time.Time)
 
-					if !fn(actualTime.UnixNano(), givenTime.UnixNano()) {
-						return matcher.Failed(
-							fmt.Sprintf(format,
-								givenTime.Format(time.RFC3339Nano),
-								actualTime.Format(time.RFC3339Nano),
-							),
-						)
-					}
-					return matcher.Matched()
-				})
+						if !fn(actualTime.UnixNano(), givenTime.UnixNano()) {
+							return matcher.Failed(
+								fmt.Sprintf(format,
+									givenTime.Format(time.RFC3339Nano),
+									actualTime.Format(time.RFC3339Nano),
+								),
+							)
+						}
+						return matcher.Matched()
+					})
 		},
 	)
 }
