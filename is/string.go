@@ -27,8 +27,8 @@ func matchingCheck(given interface{}, fn func(string, string) bool, format strin
 			return chain.
 				Add(matcher.FailIfIsNil("actual", actual)).
 				Add(matcher.FailIfIsNil("given", given)).
-				Add(matcher.FailIfRestrictedType("actual", actual, internal.RestrictedToStringKind)).
-				Add(matcher.FailIfRestrictedType("given", given, internal.RestrictedToStringKind)).
+				Add(matcher.FailIfNotRestrictedType("actual", actual, internal.RestrictedToStringKind)).
+				Add(matcher.FailIfNotRestrictedType("given", given, internal.RestrictedToStringKind)).
 				Add(func() matcher.MatchResult {
 					actualString := actual.(string)
 					givenString := given.(string)

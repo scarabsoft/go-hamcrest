@@ -12,9 +12,9 @@ func Length(length interface{}) matcher.Matcher {
 		func(actual interface{}, chain matcher.Chain) matcher.Chain {
 			return chain.
 				Add(matcher.FailIfIsNil("length", length)).
-				Add(matcher.FailIfRestrictedType("length", length, internal.RestrictedToInteger)).
+				Add(matcher.FailIfNotRestrictedType("length", length, internal.RestrictedToInteger)).
 				Add(matcher.FailIfIsNil("actual", actual)).
-				Add(matcher.FailIfRestrictedType("actual", actual, internal.NewRestrictedToKind(
+				Add(matcher.FailIfNotRestrictedType("actual", actual, internal.NewRestrictedToKind(
 					reflect.Array, reflect.Chan, reflect.Map, reflect.String, reflect.Slice, reflect.Ptr)),
 				).
 				Add(func() matcher.MatchResult {
@@ -105,7 +105,7 @@ func Key(given interface{}) matcher.Matcher {
 		func(actual interface{}, chain matcher.Chain) matcher.Chain {
 			return chain.
 				Add(matcher.FailIfIsNil("actual", actual)).
-				Add(matcher.FailIfRestrictedType("actual", actual, internal.NewRestrictedToKind(reflect.Map))).
+				Add(matcher.FailIfNotRestrictedType("actual", actual, internal.NewRestrictedToKind(reflect.Map))).
 				Add(func() matcher.MatchResult {
 					actualValue := reflect.ValueOf(actual)
 					givenValue := reflect.ValueOf(given)
@@ -137,7 +137,7 @@ func NotKey(given interface{}) matcher.Matcher {
 		func(actual interface{}, chain matcher.Chain) matcher.Chain {
 			return chain.
 				Add(matcher.FailIfIsNil("actual", actual)).
-				Add(matcher.FailIfRestrictedType("actual", actual, internal.NewRestrictedToKind(reflect.Map))).
+				Add(matcher.FailIfNotRestrictedType("actual", actual, internal.NewRestrictedToKind(reflect.Map))).
 				Add(func() matcher.MatchResult {
 					actualValue := reflect.ValueOf(actual)
 					for _, key := range actualValue.MapKeys() {

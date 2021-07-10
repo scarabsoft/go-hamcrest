@@ -105,11 +105,11 @@ func TestFailIfAnyIsNil(t *testing.T) {
 	})
 }
 
-func TestFailIfRestrictedType(t *testing.T) {
+func TestFailIfNotRestrictedType(t *testing.T) {
 	t.Run("allowed", func(t *testing.T) {
 		assert := hamcrest.NewAssertion(t)
 
-		result := matcher.FailIfRestrictedType("someName", 1, internal.RestrictedToNumericStringBoolKinds)()
+		result := matcher.FailIfNotRestrictedType("someName", 1, internal.RestrictedToNumericStringBoolKinds)()
 
 		assert.That(result.Matched, is.True())
 		assert.That(result.Cause, is.EqualTo(""))
@@ -118,7 +118,7 @@ func TestFailIfRestrictedType(t *testing.T) {
 	t.Run("not_allowed", func(t *testing.T) {
 		assert := hamcrest.NewAssertion(t)
 
-		result := matcher.FailIfRestrictedType("someName", "someValue", internal.RestrictedToBoolKind)()
+		result := matcher.FailIfNotRestrictedType("someName", "someValue", internal.RestrictedToBoolKind)()
 		assert.That(result.Matched, is.False())
 		assert.That(result.Cause, is.EqualTo("someName not one of [bool]"))
 	})

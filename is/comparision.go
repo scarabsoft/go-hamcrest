@@ -74,8 +74,8 @@ func numericStringBoolKindsComparisonMatcher(given interface{}, fn func(actual, 
 			return chain.
 				Add(matcher.FailIfIsNil("actual", actual)).
 				Add(matcher.FailIfIsNil("given", given)).
-				Add(matcher.FailIfRestrictedType("actual", actual, internal.RestrictedToNumericStringBoolKinds)).
-				Add(matcher.FailIfRestrictedType("given", given, internal.RestrictedToNumericStringBoolKinds)).
+				Add(matcher.FailIfNotRestrictedType("actual", actual, internal.RestrictedToNumericStringBoolKinds)).
+				Add(matcher.FailIfNotRestrictedType("given", given, internal.RestrictedToNumericStringBoolKinds)).
 				Add(matcher.FailIfNotSameType(actual, given)).
 				Add(func() matcher.MatchResult {
 					if !fn(actual, given) {
@@ -122,9 +122,9 @@ func numericRangeComparisonMatcher(givenMin, givenMax interface{}, fn func(actua
 				Add(matcher.FailIfIsNil("actual", actual)).
 				Add(matcher.FailIfIsNil("givenMin", givenMin)).
 				Add(matcher.FailIfIsNil("givenMax", givenMax)).
-				Add(matcher.FailIfRestrictedType("actual", actual, internal.RestrictedToNumericKinds)).
-				Add(matcher.FailIfRestrictedType("givenMin", givenMin, internal.RestrictedToNumericKinds)).
-				Add(matcher.FailIfRestrictedType("givenMax", givenMax, internal.RestrictedToNumericKinds)).
+				Add(matcher.FailIfNotRestrictedType("actual", actual, internal.RestrictedToNumericKinds)).
+				Add(matcher.FailIfNotRestrictedType("givenMin", givenMin, internal.RestrictedToNumericKinds)).
+				Add(matcher.FailIfNotRestrictedType("givenMax", givenMax, internal.RestrictedToNumericKinds)).
 				Add(matcher.FailIfNotSameType(actual, givenMin)).
 				Add(matcher.FailIfNotSameType(actual, givenMax)).
 				Add(func() matcher.MatchResult {
@@ -203,9 +203,9 @@ func CloseTo(given, error interface{}) matcher.Matcher {
 				Add(matcher.FailIfIsNil("actual", actual)).
 				Add(matcher.FailIfIsNil("given", given)).
 				Add(matcher.FailIfIsNil("error", error)).
-				Add(matcher.FailIfRestrictedType("actual", actual, internal.RestrictedToFloat)).
-				Add(matcher.FailIfRestrictedType("given", given, internal.RestrictedToFloat)).
-				Add(matcher.FailIfRestrictedType("error", error, internal.RestrictedToFloat)).
+				Add(matcher.FailIfNotRestrictedType("actual", actual, internal.RestrictedToFloat)).
+				Add(matcher.FailIfNotRestrictedType("given", given, internal.RestrictedToFloat)).
+				Add(matcher.FailIfNotRestrictedType("error", error, internal.RestrictedToFloat)).
 				Add(matcher.FailIfNotSameType(actual, given)).
 				Add(matcher.FailIfNotSameType(actual, error)).
 				Add(func() matcher.MatchResult {
@@ -233,9 +233,9 @@ func NotCloseTo(given, error interface{}) matcher.Matcher {
 				Add(matcher.FailIfIsNil("actual", actual)).
 				Add(matcher.FailIfIsNil("given", given)).
 				Add(matcher.FailIfIsNil("error", error)).
-				Add(matcher.FailIfRestrictedType("actual", actual, internal.RestrictedToFloat)).
-				Add(matcher.FailIfRestrictedType("given", given, internal.RestrictedToFloat)).
-				Add(matcher.FailIfRestrictedType("error", error, internal.RestrictedToFloat)).
+				Add(matcher.FailIfNotRestrictedType("actual", actual, internal.RestrictedToFloat)).
+				Add(matcher.FailIfNotRestrictedType("given", given, internal.RestrictedToFloat)).
+				Add(matcher.FailIfNotRestrictedType("error", error, internal.RestrictedToFloat)).
 				Add(matcher.FailIfNotSameType(actual, given)).
 				Add(matcher.FailIfNotSameType(actual, error)).
 				Add(func() matcher.MatchResult {

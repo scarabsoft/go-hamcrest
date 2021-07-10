@@ -13,8 +13,8 @@ func PointingTo(given interface{}) matcher.Matcher {
 			Add(matcher.MatchIfAllAreNil(actual, given)).
 			Add(matcher.FailIfIsNil("actual", actual)).
 			Add(matcher.FailIfIsNil("given", given)).
-			Add(matcher.FailIfRestrictedType("actual", actual, internal.RestrictedToPointer)).
-			Add(matcher.FailIfRestrictedType("given", given, internal.RestrictedToPointer)).
+			Add(matcher.FailIfNotRestrictedType("actual", actual, internal.RestrictedToPointer)).
+			Add(matcher.FailIfNotRestrictedType("given", given, internal.RestrictedToPointer)).
 			Add(func() matcher.MatchResult {
 				actualAddress := reflect.ValueOf(actual).Pointer()
 				givenAddress := reflect.ValueOf(given).Pointer()

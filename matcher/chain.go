@@ -105,7 +105,7 @@ func FailIfAnyIsNil(format string, actual, given interface{}) Function {
 	}
 }
 
-func FailIfRestrictedType(name string, value interface{}, kinds *internal.RestrictedToKinds) Function {
+func FailIfNotRestrictedType(name string, value interface{}, kinds *internal.RestrictedToKinds) Function {
 	return func() MatchResult {
 		if !kinds.Allowed(value) {
 			return Failed(internal.FormatUnsupportedVariable(name, kinds))
