@@ -45,7 +45,7 @@ func (c *MatchResult) String() string {
 type Chain interface {
 	Add(fns ...Function) Chain
 
-	Exec() MatchResult
+	iter() []Function
 }
 
 type matcherChainImpl struct {
@@ -58,8 +58,12 @@ func (c *matcherChainImpl) Add(fns ...Function) Chain {
 	return c
 }
 
-func (c *matcherChainImpl) Exec() MatchResult {
-	for _, fn := range c.functions {
+func (c matcherChainImpl) iter() []Function {
+	return c.functions
+}
+
+func exec(c Chain) MatchResult {
+	for _, fn := range c.iter() {
 		filterResult := fn()
 		if !filterResult.continueNext {
 			return filterResult

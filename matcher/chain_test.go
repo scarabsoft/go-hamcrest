@@ -190,14 +190,15 @@ func TestChain(t *testing.T) {
 
 		instance := matcher.New(func(actual interface{}, chain matcher.Chain) matcher.Chain {
 			return chain.
-				Add(func() matcher.MatchResult {
-					firstStageCalled = true
-					return matcher.Failed("failed_stage")
-				}).
-				Add(func() matcher.MatchResult {
-					secondStageCalled = true
-					return matcher.Matched()
-				})
+				Add(
+					func() matcher.MatchResult {
+						firstStageCalled = true
+						return matcher.Failed("failed_stage")
+					},
+					func() matcher.MatchResult {
+						secondStageCalled = true
+						return matcher.Matched()
+					})
 		})
 
 		assert.That(instance.Matches("abc"), is.False())
@@ -214,14 +215,15 @@ func TestChain(t *testing.T) {
 
 		instance := matcher.New(func(actual interface{}, chain matcher.Chain) matcher.Chain {
 			return chain.
-				Add(func() matcher.MatchResult {
-					firstStageCalled = true
-					return matcher.Matched()
-				}).
-				Add(func() matcher.MatchResult {
-					secondStageCalled = true
-					return matcher.Failed("I_never_get_called")
-				})
+				Add(
+					func() matcher.MatchResult {
+						firstStageCalled = true
+						return matcher.Matched()
+					},
+					func() matcher.MatchResult {
+						secondStageCalled = true
+						return matcher.Failed("I_never_get_called")
+					})
 		})
 
 		assert.That(instance.Matches("abc"), is.True())
@@ -238,14 +240,15 @@ func TestChain(t *testing.T) {
 
 		instance := matcher.New(func(actual interface{}, chain matcher.Chain) matcher.Chain {
 			return chain.
-				Add(func() matcher.MatchResult {
-					firstStageCalled = true
-					return matcher.Next()
-				}).
-				Add(func() matcher.MatchResult {
-					secondStageCalled = true
-					return matcher.Next()
-				})
+				Add(
+					func() matcher.MatchResult {
+						firstStageCalled = true
+						return matcher.Next()
+					},
+					func() matcher.MatchResult {
+						secondStageCalled = true
+						return matcher.Next()
+					})
 		})
 
 		assert.That(instance.Matches("abc"), is.True())

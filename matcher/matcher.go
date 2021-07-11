@@ -21,7 +21,7 @@ func New(chainBuilder ChainBuilder) Matcher {
 
 func (b *matcherImpl) Matches(actual interface{}) bool {
 	b.once.Do(func() {
-		r := b.chainBuilder(actual, newMatcherChain()).Exec()
+		r := exec(b.chainBuilder(actual, newMatcherChain()))
 		b.matched = r.Matched
 		b.cause = r.Cause
 	})
