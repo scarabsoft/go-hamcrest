@@ -20,14 +20,14 @@ func (m *messageImpl) String() string {
 	if m.args == nil || len(m.args) == 0 {
 		return m.format
 	}
-	return fmt.Sprintf(m.format, m.args)
+	return fmt.Sprintf(m.format, m.args...)
 }
 
 func Message(m string) MessageInterface {
 	return &messageImpl{m, nil}
 }
 
-func MessageF(format string, args []interface{}) MessageInterface {
+func MessageF(format string, args ...interface{}) MessageInterface {
 	return &messageImpl{format, args}
 }
 
