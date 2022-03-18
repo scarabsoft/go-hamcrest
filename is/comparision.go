@@ -7,19 +7,19 @@ import (
 	"reflect"
 )
 
-func EqualTo(given interface{}) matcher.Matcher {
+func EqualTo(expected interface{}) matcher.Matcher {
 	return matcher.New(
 		func(actual interface{}, chain matcher.Chain) matcher.Chain {
 			return chain.
-				Add(matcher.MatchIfAllAreNil(actual, given)).
-				Add(matcher.FailIfAnyIsNil("want value equal to %s; got %s", actual, given)).
-				Add(matcher.FailIfNotSameType(actual, given)).
+				Add(matcher.MatchIfAllAreNil(actual, expected)).
+				Add(matcher.FailIfAnyIsNil("want value equal to %s; got %s", expected, actual)).
+				Add(matcher.FailIfNotSameType(actual, expected)).
 				Add(func() matcher.MatchResult {
-					if !internal.IsEqual(actual, given) {
+					if !internal.IsEqual(actual, expected) {
 						return matcher.Failed(fmt.Sprintf(
 							"want value equal to %s; got %s",
+							internal.FormatTypeWithValue(expected),
 							internal.FormatTypeWithValue(actual),
-							internal.FormatTypeWithValue(given),
 						))
 					}
 					return matcher.Matched()
@@ -28,61 +28,61 @@ func EqualTo(given interface{}) matcher.Matcher {
 	)
 }
 
-func NotEqualTo(given interface{}) matcher.Matcher {
+func NotEqualTo(expected interface{}) matcher.Matcher {
 	return matcher.New(
 		func(actual interface{}, chain matcher.Chain) matcher.Chain {
 			return chain.
 				Add(func() matcher.MatchResult {
-					if internal.IsNil(actual) && internal.IsNil(given) {
+					if internal.IsNil(actual) && internal.IsNil(expected) {
 						return matcher.Failed(fmt.Sprintf(
 							"want value not equal to %s; got %s",
+							internal.FormatTypeWithValue(expected),
 							internal.FormatTypeWithValue(actual),
-							internal.FormatTypeWithValue(given),
 						))
 					}
 					return matcher.Next()
 				}).
 				Add(func() matcher.MatchResult {
-					if internal.IsNil(actual) || internal.IsNil(given) {
+					if internal.IsNil(actual) || internal.IsNil(expected) {
 						return matcher.Matched()
 					}
 					return matcher.Next()
 				}).
 				Add(func() matcher.MatchResult {
-					if reflect.ValueOf(actual).Type() != reflect.ValueOf(given).Type() {
-						return matcher.Failed("comparing different types; " + internal.FormatTypes("!=", actual, given))
+					if reflect.ValueOf(actual).Type() != reflect.ValueOf(expected).Type() {
+						return matcher.Failed("comparing different types; " + internal.FormatTypes("!=", actual, expected))
 					}
 					return matcher.Next()
 				}).
 				Add(func() matcher.MatchResult {
-					if !internal.IsEqual(actual, given) {
+					if !internal.IsEqual(actual, expected) {
 						return matcher.Matched()
 					}
 					return matcher.Failed(fmt.Sprintf(
 						"want value not equal to %s; got %s",
+						internal.FormatTypeWithValue(expected),
 						internal.FormatTypeWithValue(actual),
-						internal.FormatTypeWithValue(given),
 					))
 				})
 		},
 	)
 }
 
-func numericStringBoolKindsComparisonMatcher(given interface{}, fn func(actual, given interface{}) bool, format string) matcher.Matcher {
+func numericStringBoolKindsComparisonMatcher(expected interface{}, fn func(actual, expected interface{}) bool, format string) matcher.Matcher {
 	return matcher.New(
 		func(actual interface{}, chain matcher.Chain) matcher.Chain {
 			return chain.
 				Add(
 					matcher.FailIfIsNil("actual", actual),
-					matcher.FailIfIsNil("given", given),
+					matcher.FailIfIsNil("expected", expected),
 					matcher.FailIfNotRestrictedType("actual", actual, internal.RestrictedToNumericStringBoolKinds),
-					matcher.FailIfNotRestrictedType("given", given, internal.RestrictedToNumericStringBoolKinds),
-					matcher.FailIfNotSameType(actual, given),
+					matcher.FailIfNotRestrictedType("expected", expected, internal.RestrictedToNumericStringBoolKinds),
+					matcher.FailIfNotSameType(actual, expected),
 					func() matcher.MatchResult {
-						if !fn(actual, given) {
+						if !fn(actual, expected) {
 							return matcher.Failed(fmt.Sprintf(
 								format,
-								internal.FormatTypeWithValue(given),
+								internal.FormatTypeWithValue(expected),
 								internal.FormatTypeWithValue(actual),
 							))
 						}
@@ -92,58 +92,58 @@ func numericStringBoolKindsComparisonMatcher(given interface{}, fn func(actual, 
 	)
 }
 
-func GreaterThan(given interface{}) matcher.Matcher {
+func GreaterThan(expected interface{}) matcher.Matcher {
 	return numericStringBoolKindsComparisonMatcher(
-		given, internal.IsGreaterThan, "want value greater than %s; got %s",
+		expected, internal.IsGreaterThan, "want value greater than %s; got %s",
 	)
 }
 
-func GreaterThanEqual(given interface{}) matcher.Matcher {
+func GreaterThanEqual(expected interface{}) matcher.Matcher {
 	return numericStringBoolKindsComparisonMatcher(
-		given, internal.IsGreaterThanEqual, "want value greater than equal to %s; got %s",
+		expected, internal.IsGreaterThanEqual, "want value greater than equal to %s; got %s",
 	)
 }
 
-func LessThan(given interface{}) matcher.Matcher {
+func LessThan(expected interface{}) matcher.Matcher {
 	return numericStringBoolKindsComparisonMatcher(
-		given, internal.IsLessThan, "want value less than %s; got %s",
+		expected, internal.IsLessThan, "want value less than %s; got %s",
 	)
 }
 
-func LessThanEqual(given interface{}) matcher.Matcher {
+func LessThanEqual(expected interface{}) matcher.Matcher {
 	return numericStringBoolKindsComparisonMatcher(
-		given, internal.IsLessThanEqual, "want value less than equal to %s; got %s",
+		expected, internal.IsLessThanEqual, "want value less than equal to %s; got %s",
 	)
 }
 
-func numericRangeComparisonMatcher(givenMin, givenMax interface{}, fn func(actual, givenMin, givenMax interface{}) bool, format string) matcher.Matcher {
+func numericRangeComparisonMatcher(expectedMin, expectedMax interface{}, fn func(actual, expectedMin, expectedMax interface{}) bool, format string) matcher.Matcher {
 	return matcher.New(
 		func(actual interface{}, chain matcher.Chain) matcher.Chain {
 			return chain.
 				Add(
 					matcher.FailIfIsNil("actual", actual),
-					matcher.FailIfIsNil("givenMin", givenMin),
-					matcher.FailIfIsNil("givenMax", givenMax),
+					matcher.FailIfIsNil("expectedMin", expectedMin),
+					matcher.FailIfIsNil("expectedMax", expectedMax),
 					matcher.FailIfNotRestrictedType("actual", actual, internal.RestrictedToNumericKinds),
-					matcher.FailIfNotRestrictedType("givenMin", givenMin, internal.RestrictedToNumericKinds),
-					matcher.FailIfNotRestrictedType("givenMax", givenMax, internal.RestrictedToNumericKinds),
-					matcher.FailIfNotSameType(actual, givenMin),
-					matcher.FailIfNotSameType(actual, givenMax),
+					matcher.FailIfNotRestrictedType("expectedMin", expectedMin, internal.RestrictedToNumericKinds),
+					matcher.FailIfNotRestrictedType("expectedMax", expectedMax, internal.RestrictedToNumericKinds),
+					matcher.FailIfNotSameType(actual, expectedMin),
+					matcher.FailIfNotSameType(actual, expectedMax),
 					func() matcher.MatchResult {
-						if internal.IsLessThanEqual(givenMin, givenMax) {
+						if internal.IsLessThanEqual(expectedMin, expectedMax) {
 							return matcher.Next()
 						}
-						return matcher.Failed(fmt.Sprintf("givenMin %s must be <= givenMax %s",
-							internal.FormatTypeWithValue(givenMin),
-							internal.FormatTypeWithValue(givenMax),
+						return matcher.Failed(fmt.Sprintf("expectedMin %s must be <= expectedMax %s",
+							internal.FormatTypeWithValue(expectedMin),
+							internal.FormatTypeWithValue(expectedMax),
 						))
 					},
 					func() matcher.MatchResult {
-						if !fn(actual, givenMin, givenMax) {
+						if !fn(actual, expectedMin, expectedMax) {
 							return matcher.Failed(fmt.Sprintf(
 								format,
-								internal.FormatTypeWithValue(givenMin),
-								internal.FormatTypeWithValue(givenMax),
+								internal.FormatTypeWithValue(expectedMin),
+								internal.FormatTypeWithValue(expectedMax),
 								internal.FormatTypeWithValue(actual),
 							))
 						}
@@ -158,9 +158,9 @@ func betweenOrEqual(a, gMi, gMax interface{}) bool {
 
 }
 
-func Between(givenMin, givenMax interface{}) matcher.Matcher {
+func Between(expectedMin, expectedMax interface{}) matcher.Matcher {
 	return numericRangeComparisonMatcher(
-		givenMin, givenMax,
+		expectedMin, expectedMax,
 		func(a, gMi, gMax interface{}) bool {
 			return internal.IsGreaterThan(a, gMi) && internal.IsLessThan(a, gMax)
 		},
@@ -168,9 +168,9 @@ func Between(givenMin, givenMax interface{}) matcher.Matcher {
 	)
 }
 
-func BetweenOrEqual(givenMin, givenMax interface{}) matcher.Matcher {
+func BetweenOrEqual(expectedMin, expectedMax interface{}) matcher.Matcher {
 	return numericRangeComparisonMatcher(
-		givenMin, givenMax,
+		expectedMin, expectedMax,
 		func(a, gMi, gMax interface{}) bool {
 			return betweenOrEqual(a, gMi, gMax)
 		},
@@ -178,9 +178,9 @@ func BetweenOrEqual(givenMin, givenMax interface{}) matcher.Matcher {
 	)
 }
 
-func NotBetween(givenMin, givenMax interface{}) matcher.Matcher {
+func NotBetween(expectedMin, expectedMax interface{}) matcher.Matcher {
 	return numericRangeComparisonMatcher(
-		givenMin, givenMax,
+		expectedMin, expectedMax,
 		func(a, gMi, gMax interface{}) bool {
 			return !(internal.IsGreaterThan(a, gMi) && internal.IsLessThan(a, gMax))
 		},
@@ -188,9 +188,9 @@ func NotBetween(givenMin, givenMax interface{}) matcher.Matcher {
 	)
 }
 
-func NotBetweenOrEqual(givenMin, givenMax interface{}) matcher.Matcher {
+func NotBetweenOrEqual(expectedMin, expectedMax interface{}) matcher.Matcher {
 	return numericRangeComparisonMatcher(
-		givenMin, givenMax,
+		expectedMin, expectedMax,
 		func(a, gMi, gMax interface{}) bool {
 			return !(internal.IsGreaterThanEqual(a, gMi) && internal.IsLessThanEqual(a, gMax))
 		},
@@ -198,26 +198,26 @@ func NotBetweenOrEqual(givenMin, givenMax interface{}) matcher.Matcher {
 	)
 }
 
-func CloseTo(given, error interface{}) matcher.Matcher {
+func CloseTo(expected, error interface{}) matcher.Matcher {
 	return matcher.New(
 		func(actual interface{}, chain matcher.Chain) matcher.Chain {
 			return chain.
 				Add(
 					matcher.FailIfIsNil("actual", actual),
-					matcher.FailIfIsNil("given", given),
+					matcher.FailIfIsNil("expected", expected),
 					matcher.FailIfIsNil("error", error),
 					matcher.FailIfNotRestrictedType("actual", actual, internal.RestrictedToFloat),
-					matcher.FailIfNotRestrictedType("given", given, internal.RestrictedToFloat),
+					matcher.FailIfNotRestrictedType("expected", expected, internal.RestrictedToFloat),
 					matcher.FailIfNotRestrictedType("error", error, internal.RestrictedToFloat),
-					matcher.FailIfNotSameType(actual, given),
+					matcher.FailIfNotSameType(actual, expected),
 					matcher.FailIfNotSameType(actual, error),
 					func() matcher.MatchResult {
-						givenValue := given.(float64)
+						expectedValue := expected.(float64)
 						errorValue := error.(float64)
-						if !betweenOrEqual(actual, givenValue-errorValue, givenValue+errorValue) {
+						if !betweenOrEqual(actual, expectedValue-errorValue, expectedValue+errorValue) {
 							return matcher.Failed(
 								fmt.Sprintf("want value close to %s with error %s; got %s",
-									internal.FormatTypeWithValue(given),
+									internal.FormatTypeWithValue(expected),
 									internal.FormatTypeWithValue(error),
 									internal.FormatTypeWithValue(actual),
 								),
@@ -229,26 +229,26 @@ func CloseTo(given, error interface{}) matcher.Matcher {
 	)
 }
 
-func NotCloseTo(given, error interface{}) matcher.Matcher {
+func NotCloseTo(expected, error interface{}) matcher.Matcher {
 	return matcher.New(
 		func(actual interface{}, chain matcher.Chain) matcher.Chain {
 			return chain.
 				Add(
 					matcher.FailIfIsNil("actual", actual),
-					matcher.FailIfIsNil("given", given),
+					matcher.FailIfIsNil("expected", expected),
 					matcher.FailIfIsNil("error", error),
 					matcher.FailIfNotRestrictedType("actual", actual, internal.RestrictedToFloat),
-					matcher.FailIfNotRestrictedType("given", given, internal.RestrictedToFloat),
+					matcher.FailIfNotRestrictedType("expected", expected, internal.RestrictedToFloat),
 					matcher.FailIfNotRestrictedType("error", error, internal.RestrictedToFloat),
-					matcher.FailIfNotSameType(actual, given),
+					matcher.FailIfNotSameType(actual, expected),
 					matcher.FailIfNotSameType(actual, error),
 					func() matcher.MatchResult {
-						givenValue := given.(float64)
+						expectedValue := expected.(float64)
 						errorValue := error.(float64)
-						if betweenOrEqual(actual, givenValue-errorValue, givenValue+errorValue) {
+						if betweenOrEqual(actual, expectedValue-errorValue, expectedValue+errorValue) {
 							return matcher.Failed(
 								fmt.Sprintf("want value not close to %s with error %s; got %s",
-									internal.FormatTypeWithValue(given),
+									internal.FormatTypeWithValue(expected),
 									internal.FormatTypeWithValue(error),
 									internal.FormatTypeWithValue(actual),
 								),

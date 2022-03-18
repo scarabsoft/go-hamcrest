@@ -39,7 +39,7 @@ func TestBefore(t *testing.T) {
 		matched := matcher.Matches(someTime)
 
 		assert.That(matched, is.False())
-		assert.That(matcher.Cause(), is.EqualTo("given is <nil>"))
+		assert.That(matcher.Cause(), is.EqualTo("expected is <nil>"))
 	})
 
 	t.Run("int_someTime", func(t *testing.T) {
@@ -59,7 +59,7 @@ func TestBefore(t *testing.T) {
 		matched := matcher.Matches(someTime)
 
 		assert.That(matched, is.False())
-		assert.That(matcher.Cause(), is.EqualTo("want given to be type of time.Time; got int(10)"))
+		assert.That(matcher.Cause(), is.EqualTo("want expected to be type of time.Time; got int(10)"))
 	})
 
 	t.Run("beforeThatTime_someTime", func(t *testing.T) {
@@ -98,7 +98,7 @@ func TestNotBefore(t *testing.T) {
 		matched := matcher.Matches(someTime)
 
 		assert.That(matched, is.False())
-		assert.That(matcher.Cause(), is.EqualTo("given is <nil>"))
+		assert.That(matcher.Cause(), is.EqualTo("expected is <nil>"))
 	})
 
 	t.Run("int_someTime", func(t *testing.T) {
@@ -118,7 +118,7 @@ func TestNotBefore(t *testing.T) {
 		matched := matcher.Matches(someTime)
 
 		assert.That(matched, is.False())
-		assert.That(matcher.Cause(), is.EqualTo("want given to be type of time.Time; got int(10)"))
+		assert.That(matcher.Cause(), is.EqualTo("want expected to be type of time.Time; got int(10)"))
 	})
 
 	t.Run("beforeThatTime_someTime", func(t *testing.T) {
@@ -157,7 +157,7 @@ func TestBeforeOrEqual(t *testing.T) {
 		matched := matcher.Matches(someTime)
 
 		assert.That(matched, is.False())
-		assert.That(matcher.Cause(), is.EqualTo("given is <nil>"))
+		assert.That(matcher.Cause(), is.EqualTo("expected is <nil>"))
 	})
 
 	t.Run("int_someTime", func(t *testing.T) {
@@ -177,7 +177,7 @@ func TestBeforeOrEqual(t *testing.T) {
 		matched := matcher.Matches(someTime)
 
 		assert.That(matched, is.False())
-		assert.That(matcher.Cause(), is.EqualTo("want given to be type of time.Time; got int(10)"))
+		assert.That(matcher.Cause(), is.EqualTo("want expected to be type of time.Time; got int(10)"))
 	})
 
 	t.Run("BeforeOrSameThatTime_someTime", func(t *testing.T) {
@@ -213,7 +213,7 @@ func TestAfter(t *testing.T) {
 		matched := matcher.Matches(someTime)
 
 		assert.That(matched, is.False())
-		assert.That(matcher.Cause(), is.EqualTo("given is <nil>"))
+		assert.That(matcher.Cause(), is.EqualTo("expected is <nil>"))
 	})
 
 	t.Run("int_someTime", func(t *testing.T) {
@@ -233,7 +233,7 @@ func TestAfter(t *testing.T) {
 		matched := matcher.Matches(someTime)
 
 		assert.That(matched, is.False())
-		assert.That(matcher.Cause(), is.EqualTo("want given to be type of time.Time; got int(10)"))
+		assert.That(matcher.Cause(), is.EqualTo("want expected to be type of time.Time; got int(10)"))
 	})
 
 	t.Run("afterThatTime_someTime", func(t *testing.T) {
@@ -272,7 +272,7 @@ func TestNotAfter(t *testing.T) {
 		matched := matcher.Matches(someTime)
 
 		assert.That(matched, is.False())
-		assert.That(matcher.Cause(), is.EqualTo("given is <nil>"))
+		assert.That(matcher.Cause(), is.EqualTo("expected is <nil>"))
 	})
 
 	t.Run("int_someTime", func(t *testing.T) {
@@ -292,7 +292,7 @@ func TestNotAfter(t *testing.T) {
 		matched := matcher.Matches(someTime)
 
 		assert.That(matched, is.False())
-		assert.That(matcher.Cause(), is.EqualTo("want given to be type of time.Time; got int(10)"))
+		assert.That(matcher.Cause(), is.EqualTo("want expected to be type of time.Time; got int(10)"))
 	})
 
 	t.Run("afterThatTime_someTime", func(t *testing.T) {
@@ -331,7 +331,7 @@ func TestAfterOrEqual(t *testing.T) {
 		matched := matcher.Matches(someTime)
 
 		assert.That(matched, is.False())
-		assert.That(matcher.Cause(), is.EqualTo("given is <nil>"))
+		assert.That(matcher.Cause(), is.EqualTo("expected is <nil>"))
 	})
 
 	t.Run("int_someTime", func(t *testing.T) {
@@ -351,7 +351,7 @@ func TestAfterOrEqual(t *testing.T) {
 		matched := matcher.Matches(someTime)
 
 		assert.That(matched, is.False())
-		assert.That(matcher.Cause(), is.EqualTo("want given to be type of time.Time; got int(10)"))
+		assert.That(matcher.Cause(), is.EqualTo("want expected to be type of time.Time; got int(10)"))
 	})
 
 	t.Run("afterThatTime_someTime", func(t *testing.T) {

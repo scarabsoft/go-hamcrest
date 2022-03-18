@@ -12,7 +12,7 @@ func TestLength(t *testing.T) {
 		assert := hamcrest.NewAssertion(t)
 
 		matcher := has.Length(nil)
-		matched := matcher.Matches([]string{"given"})
+		matched := matcher.Matches([]string{"expected"})
 
 		assert.That(matched, is.False())
 		assert.That(matcher.Cause(), is.EqualTo("length is <nil>"))
@@ -22,7 +22,7 @@ func TestLength(t *testing.T) {
 		assert := hamcrest.NewAssertion(t)
 
 		matcher := has.Length(32.1)
-		matched := matcher.Matches([]string{"given"})
+		matched := matcher.Matches([]string{"expected"})
 
 		assert.That(matched, is.False())
 		assert.That(matcher.Cause(), is.EqualTo("length not one of [int,int8,int16,int32,int64,uint,uint8,uint16,uint32,uint64]"))
@@ -51,14 +51,14 @@ func TestLength(t *testing.T) {
 	t.Run("length_match_unsigned_integer_length", func(t *testing.T) {
 		assert := hamcrest.NewAssertion(t)
 
-		matcher := assert.That([1]string{"given"}, has.Length(uint16(1)))
+		matcher := assert.That([1]string{"expected"}, has.Length(uint16(1)))
 		assert.That(matcher.Cause(), is.EqualTo(""))
 	})
 
 	t.Run("actual_match", func(t *testing.T) {
 		assert := hamcrest.NewAssertion(t)
 
-		matcher := assert.That([1]string{"given"}, has.Length(1))
+		matcher := assert.That([1]string{"expected"}, has.Length(1))
 		assert.That(matcher.Cause(), is.EqualTo(""))
 	})
 
@@ -66,7 +66,7 @@ func TestLength(t *testing.T) {
 		assert := hamcrest.NewAssertion(t)
 
 		matcher := has.Length(2)
-		matched := matcher.Matches([1]string{"given"})
+		matched := matcher.Matches([1]string{"expected"})
 
 		assert.That(matched, is.False())
 		assert.That(matcher.Cause(), is.EqualTo("want length of 2; got 1"))

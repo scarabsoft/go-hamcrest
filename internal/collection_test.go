@@ -23,15 +23,15 @@ func TestLength(t *testing.T) {
 		error  string
 	}{
 		{actual: [0]string{}, length: 0, error: ""},
-		{actual: [1]string{"given"}, length: 1, error: ""},
+		{actual: [1]string{"expected"}, length: 1, error: ""},
 		{actual: &[0]string{}, length: 0, error: ""},
 
 		{actual: []string{}, length: 0, error: ""},
-		{actual: []string{"given"}, length: 1, error: ""},
+		{actual: []string{"expected"}, length: 1, error: ""},
 		{actual: &[]string{}, length: 0, error: ""},
 
 		{actual: map[string]string{}, length: 0, error: ""},
-		{actual: map[string]string{"givenKey": "givenValue"}, length: 1, error: ""},
+		{actual: map[string]string{"expectedKey": "expectedValue"}, length: 1, error: ""},
 		{actual: &map[string]string{}, length: 0, error: ""},
 
 		{actual: "", length: 0, error: ""},
@@ -105,16 +105,16 @@ func TestHasItem(t *testing.T) {
 	// inspecting a channel does not seems to be trivial, as we have to consume elements in order to compare them
 	// but as we want to use the HasItem method for HasItems as well, we have to make sure that we dont alter the channel
 	t.Run("special_case_channel", func(t *testing.T) {
-		givenChannel := testChannel(10)
+		expectedChannel := testChannel(10)
 
-		assertTrue(t, len(givenChannel) == 10)
-		result, err := HasItem(givenChannel, 5)
+		assertTrue(t, len(expectedChannel) == 10)
+		result, err := HasItem(expectedChannel, 5)
 		assertTrue(t, err == nil)
 		assertTrue(t, result)
-		assertTrue(t, len(givenChannel) == 10)
+		assertTrue(t, len(expectedChannel) == 10)
 
 		for i := 0; i < 10; i++ {
-			v := <-givenChannel
+			v := <-expectedChannel
 			assertTrue(t, i == v)
 		}
 	})

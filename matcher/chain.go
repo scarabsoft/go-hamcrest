@@ -76,9 +76,9 @@ func newMatcherChain() Chain {
 	return &matcherChainImpl{}
 }
 
-func MatchIfAllAreNil(actual, given interface{}) Function {
+func MatchIfAllAreNil(actual, expected interface{}) Function {
 	return func() MatchResult {
-		if internal.IsNil(actual) && internal.IsNil(given) {
+		if internal.IsNil(actual) && internal.IsNil(expected) {
 			return Matched()
 		}
 		return Next()
@@ -94,14 +94,14 @@ func FailIfIsNil(name string, value interface{}) Function {
 	}
 }
 
-func FailIfAnyIsNil(format string, actual, given interface{}) Function {
+func FailIfAnyIsNil(format string, actual, expected interface{}) Function {
 	return func() MatchResult {
-		if internal.IsNil(actual) || internal.IsNil(given) {
+		if internal.IsNil(actual) || internal.IsNil(expected) {
 			return Failed(
 				fmt.Sprintf(
 					format,
 					internal.FormatTypeWithValue(actual),
-					internal.FormatTypeWithValue(given),
+					internal.FormatTypeWithValue(expected),
 				),
 			)
 		}
@@ -118,25 +118,25 @@ func FailIfNotRestrictedType(name string, value interface{}, kinds *internal.Res
 	}
 }
 
-func FailIfNotSameType(actual, given interface{}) Function {
+func FailIfNotSameType(actual, expected interface{}) Function {
 	return func() MatchResult {
-		if internal.IsNil(actual) && internal.IsNil(given) {
+		if internal.IsNil(actual) && internal.IsNil(expected) {
 			return Next()
 		}
 
-		if (internal.IsNil(actual) || internal.IsNil(given)) ||
-			reflect.ValueOf(actual).Type() != reflect.ValueOf(given).Type() {
-			return Failed("comparing different types; " + internal.FormatTypes("!=", actual, given))
+		if (internal.IsNil(actual) || internal.IsNil(expected)) ||
+			reflect.ValueOf(actual).Type() != reflect.ValueOf(expected).Type() {
+			return Failed("comparing different types; " + internal.FormatTypes("!=", actual, expected))
 		}
 		return Next()
 	}
 }
 
-// applies a matcherFn to every element of given
-func LoopAndApply(matcherFn func(elem interface{}) Matcher, given ...interface{}) Matcher {
+// LoopAndApply applies a matcherFn to every element of expected
+func LoopAndApply(matcherFn func(elem interface{}) Matcher, expected ...interface{}) Matcher {
 	return New(
 		func(actual interface{}, chain Chain) Chain {
-			for _, g := range given {
+			for _, g := range expected {
 				chain.Add(func() MatchResult {
 					m := matcherFn(g)
 					if m.Matches(actual) {

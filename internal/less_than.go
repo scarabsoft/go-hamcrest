@@ -7,28 +7,28 @@ import (
 )
 
 // IsLessThan only supports numeric, string and boolean values
-func IsLessThan(actual, given interface{}) bool {
+func IsLessThan(actual, expected interface{}) bool {
 
-	if reflect.TypeOf(actual) != reflect.TypeOf(given) {
-		panic(FormatComparingIncompatibleTypes(actual, given))
+	if reflect.TypeOf(actual) != reflect.TypeOf(expected) {
+		panic(FormatComparingIncompatibleTypes(actual, expected))
 	}
 
 	actualValue := reflect.ValueOf(actual)
-	givenValue := reflect.ValueOf(given)
+	expectedValue := reflect.ValueOf(expected)
 
-	switch given.(type) {
+	switch expected.(type) {
 	case int, int8, int16, int32, int64:
-		return actualValue.Int() < givenValue.Int()
+		return actualValue.Int() < expectedValue.Int()
 	case uint, uint8, uint16, uint32, uint64:
-		return actualValue.Uint() < givenValue.Uint()
+		return actualValue.Uint() < expectedValue.Uint()
 	case float32, float64:
-		return actualValue.Float() < givenValue.Float()
+		return actualValue.Float() < expectedValue.Float()
 	case string:
-		return actualValue.String() < givenValue.String()
+		return actualValue.String() < expectedValue.String()
 	case bool:
-		return convertBoolToInt(actualValue.Bool()) < convertBoolToInt(givenValue.Bool())
+		return convertBoolToInt(actualValue.Bool()) < convertBoolToInt(expectedValue.Bool())
 	case time.Duration:
-		return actual.(time.Duration).Microseconds() < given.(time.Duration).Microseconds()
+		return actual.(time.Duration).Microseconds() < expected.(time.Duration).Microseconds()
 	default:
 		fmt.Println("CALLED")
 	}
@@ -37,6 +37,6 @@ func IsLessThan(actual, given interface{}) bool {
 }
 
 // IsLessThanEqual only supports numeric, string and boolean values
-func IsLessThanEqual(actual, given interface{}) bool {
-	return IsEqual(actual, given) || IsLessThan(actual, given)
+func IsLessThanEqual(actual, expected interface{}) bool {
+	return IsEqual(actual, expected) || IsLessThan(actual, expected)
 }

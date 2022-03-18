@@ -22,7 +22,7 @@ func TestEqualTo(t *testing.T) {
 		matched := matcher.Matches(1)
 
 		assert.That(matched, is.False())
-		assert.That(matcher.Cause(), is.EqualTo("want value equal to int(1); got <nil>"))
+		assert.That(matcher.Cause(), is.EqualTo("want value equal to <nil>; got int(1)"))
 	})
 
 	t.Run("nil_1", func(t *testing.T) {
@@ -32,7 +32,7 @@ func TestEqualTo(t *testing.T) {
 		matched := matcher.Matches(nil)
 
 		assert.That(matched, is.False())
-		assert.That(matcher.Cause(), is.EqualTo("want value equal to <nil>; got int(1)"))
+		assert.That(matcher.Cause(), is.EqualTo("want value equal to int(1); got <nil>"))
 	})
 
 	t.Run("float32_float64", func(t *testing.T) {
@@ -52,7 +52,7 @@ func TestEqualTo(t *testing.T) {
 		matched := matcher.Matches(2)
 
 		assert.That(matched, is.False())
-		assert.That(matcher.Cause(), is.EqualTo("want value equal to int(2); got int(1)"))
+		assert.That(matcher.Cause(), is.EqualTo("want value equal to int(1); got int(2)"))
 	})
 
 	t.Run("42_42", func(t *testing.T) {
@@ -128,13 +128,13 @@ func TestGreaterThan(t *testing.T) {
 		assert.That(matcher.Cause(), is.EqualTo("actual not one of [bool,string,int,int8,int16,int32,int64,uint,uint8,uint16,uint32,uint64,float32,float64]"))
 	})
 
-	t.Run("given_unsupported", func(t *testing.T) {
+	t.Run("expected_unsupported", func(t *testing.T) {
 		assert := hamcrest.NewAssertion(t)
 
 		matcher := is.GreaterThan([1]int{1})
 		matched := matcher.Matches(1)
 		assert.That(matched, is.False())
-		assert.That(matcher.Cause(), is.EqualTo("given not one of [bool,string,int,int8,int16,int32,int64,uint,uint8,uint16,uint32,uint64,float32,float64]"))
+		assert.That(matcher.Cause(), is.EqualTo("expected not one of [bool,string,int,int8,int16,int32,int64,uint,uint8,uint16,uint32,uint64,float32,float64]"))
 	})
 
 	t.Run("nil_nil", func(t *testing.T) {
@@ -153,7 +153,7 @@ func TestGreaterThan(t *testing.T) {
 		matched := matcher.Matches(1)
 
 		assert.That(matched, is.False())
-		assert.That(matcher.Cause(), is.EqualTo("given is <nil>"))
+		assert.That(matcher.Cause(), is.EqualTo("expected is <nil>"))
 	})
 
 	t.Run("nil_1", func(t *testing.T) {
@@ -214,13 +214,13 @@ func TestGreaterThanEqual(t *testing.T) {
 		assert.That(matcher.Cause(), is.EqualTo("actual not one of [bool,string,int,int8,int16,int32,int64,uint,uint8,uint16,uint32,uint64,float32,float64]"))
 	})
 
-	t.Run("given_unsupported", func(t *testing.T) {
+	t.Run("expected_unsupported", func(t *testing.T) {
 		assert := hamcrest.NewAssertion(t)
 
 		matcher := is.GreaterThan([1]int{1})
 		matched := matcher.Matches(1)
 		assert.That(matched, is.False())
-		assert.That(matcher.Cause(), is.EqualTo("given not one of [bool,string,int,int8,int16,int32,int64,uint,uint8,uint16,uint32,uint64,float32,float64]"))
+		assert.That(matcher.Cause(), is.EqualTo("expected not one of [bool,string,int,int8,int16,int32,int64,uint,uint8,uint16,uint32,uint64,float32,float64]"))
 	})
 
 	t.Run("nil_nil", func(t *testing.T) {
@@ -239,7 +239,7 @@ func TestGreaterThanEqual(t *testing.T) {
 		matched := matcher.Matches(1)
 
 		assert.That(matched, is.False())
-		assert.That(matcher.Cause(), is.EqualTo("given is <nil>"))
+		assert.That(matcher.Cause(), is.EqualTo("expected is <nil>"))
 	})
 
 	t.Run("nil_1", func(t *testing.T) {
@@ -298,13 +298,13 @@ func TestLessThan(t *testing.T) {
 		assert.That(matcher.Cause(), is.EqualTo("actual not one of [bool,string,int,int8,int16,int32,int64,uint,uint8,uint16,uint32,uint64,float32,float64]"))
 	})
 
-	t.Run("given_unsupported", func(t *testing.T) {
+	t.Run("expected_unsupported", func(t *testing.T) {
 		assert := hamcrest.NewAssertion(t)
 
 		matcher := is.LessThan([1]int{1})
 		matched := matcher.Matches(1)
 		assert.That(matched, is.False())
-		assert.That(matcher.Cause(), is.EqualTo("given not one of [bool,string,int,int8,int16,int32,int64,uint,uint8,uint16,uint32,uint64,float32,float64]"))
+		assert.That(matcher.Cause(), is.EqualTo("expected not one of [bool,string,int,int8,int16,int32,int64,uint,uint8,uint16,uint32,uint64,float32,float64]"))
 	})
 
 	t.Run("nil_nil", func(t *testing.T) {
@@ -323,7 +323,7 @@ func TestLessThan(t *testing.T) {
 		matched := matcher.Matches(1)
 
 		assert.That(matched, is.False())
-		assert.That(matcher.Cause(), is.EqualTo("given is <nil>"))
+		assert.That(matcher.Cause(), is.EqualTo("expected is <nil>"))
 	})
 
 	t.Run("nil_1", func(t *testing.T) {
@@ -385,13 +385,13 @@ func TestLessThanEqual(t *testing.T) {
 		assert.That(matcher.Cause(), is.EqualTo("actual not one of [bool,string,int,int8,int16,int32,int64,uint,uint8,uint16,uint32,uint64,float32,float64]"))
 	})
 
-	t.Run("given_unsupported", func(t *testing.T) {
+	t.Run("expected_unsupported", func(t *testing.T) {
 		assert := hamcrest.NewAssertion(t)
 
 		matcher := is.LessThanEqual([1]int{1})
 		matched := matcher.Matches(1)
 		assert.That(matched, is.False())
-		assert.That(matcher.Cause(), is.EqualTo("given not one of [bool,string,int,int8,int16,int32,int64,uint,uint8,uint16,uint32,uint64,float32,float64]"))
+		assert.That(matcher.Cause(), is.EqualTo("expected not one of [bool,string,int,int8,int16,int32,int64,uint,uint8,uint16,uint32,uint64,float32,float64]"))
 	})
 
 	t.Run("nil_nil", func(t *testing.T) {
@@ -410,7 +410,7 @@ func TestLessThanEqual(t *testing.T) {
 		matched := matcher.Matches(1)
 
 		assert.That(matched, is.False())
-		assert.That(matcher.Cause(), is.EqualTo("given is <nil>"))
+		assert.That(matcher.Cause(), is.EqualTo("expected is <nil>"))
 	})
 
 	t.Run("nil_1", func(t *testing.T) {
@@ -471,22 +471,22 @@ func TestBetween(t *testing.T) {
 		assert.That(matcher.Cause(), is.EqualTo("actual not one of [int,int8,int16,int32,int64,uint,uint8,uint16,uint32,uint64,float32,float64]"))
 	})
 
-	t.Run("givenMin_unsupported", func(t *testing.T) {
+	t.Run("expectedMin_unsupported", func(t *testing.T) {
 		assert := hamcrest.NewAssertion(t)
 
 		matcher := is.Between([1]int{1}, 2)
 		matched := matcher.Matches(1)
 		assert.That(matched, is.False())
-		assert.That(matcher.Cause(), is.EqualTo("givenMin not one of [int,int8,int16,int32,int64,uint,uint8,uint16,uint32,uint64,float32,float64]"))
+		assert.That(matcher.Cause(), is.EqualTo("expectedMin not one of [int,int8,int16,int32,int64,uint,uint8,uint16,uint32,uint64,float32,float64]"))
 	})
 
-	t.Run("givenMax_unsupported", func(t *testing.T) {
+	t.Run("expectedMax_unsupported", func(t *testing.T) {
 		assert := hamcrest.NewAssertion(t)
 
 		matcher := is.Between(1, [1]int{1})
 		matched := matcher.Matches(1)
 		assert.That(matched, is.False())
-		assert.That(matcher.Cause(), is.EqualTo("givenMax not one of [int,int8,int16,int32,int64,uint,uint8,uint16,uint32,uint64,float32,float64]"))
+		assert.That(matcher.Cause(), is.EqualTo("expectedMax not one of [int,int8,int16,int32,int64,uint,uint8,uint16,uint32,uint64,float32,float64]"))
 	})
 
 	t.Run("nil_nil_nil", func(t *testing.T) {
@@ -515,7 +515,7 @@ func TestBetween(t *testing.T) {
 		matched := matcher.Matches(1)
 
 		assert.That(matched, is.False())
-		assert.That(matcher.Cause(), is.EqualTo("givenMin is <nil>"))
+		assert.That(matcher.Cause(), is.EqualTo("expectedMin is <nil>"))
 	})
 
 	t.Run("1_1_nil", func(t *testing.T) {
@@ -525,7 +525,7 @@ func TestBetween(t *testing.T) {
 		matched := matcher.Matches(1)
 
 		assert.That(matched, is.False())
-		assert.That(matcher.Cause(), is.EqualTo("givenMax is <nil>"))
+		assert.That(matcher.Cause(), is.EqualTo("expectedMax is <nil>"))
 	})
 
 	t.Run("int_int_float", func(t *testing.T) {
@@ -555,7 +555,7 @@ func TestBetween(t *testing.T) {
 		matched := matcher.Matches(1)
 
 		assert.That(matched, is.False())
-		assert.That(matcher.Cause(), is.EqualTo("givenMin int(4) must be <= givenMax int(2)"))
+		assert.That(matcher.Cause(), is.EqualTo("expectedMin int(4) must be <= expectedMax int(2)"))
 	})
 
 	t.Run("2_1_4", func(t *testing.T) {
@@ -596,22 +596,22 @@ func TestBetweenOrEqual(t *testing.T) {
 		assert.That(matcher.Cause(), is.EqualTo("actual not one of [int,int8,int16,int32,int64,uint,uint8,uint16,uint32,uint64,float32,float64]"))
 	})
 
-	t.Run("givenMin_unsupported", func(t *testing.T) {
+	t.Run("expectedMin_unsupported", func(t *testing.T) {
 		assert := hamcrest.NewAssertion(t)
 
 		matcher := is.BetweenOrEqual([1]int{1}, 2)
 		matched := matcher.Matches(1)
 		assert.That(matched, is.False())
-		assert.That(matcher.Cause(), is.EqualTo("givenMin not one of [int,int8,int16,int32,int64,uint,uint8,uint16,uint32,uint64,float32,float64]"))
+		assert.That(matcher.Cause(), is.EqualTo("expectedMin not one of [int,int8,int16,int32,int64,uint,uint8,uint16,uint32,uint64,float32,float64]"))
 	})
 
-	t.Run("givenMax_unsupported", func(t *testing.T) {
+	t.Run("expectedMax_unsupported", func(t *testing.T) {
 		assert := hamcrest.NewAssertion(t)
 
 		matcher := is.BetweenOrEqual(1, [1]int{1})
 		matched := matcher.Matches(1)
 		assert.That(matched, is.False())
-		assert.That(matcher.Cause(), is.EqualTo("givenMax not one of [int,int8,int16,int32,int64,uint,uint8,uint16,uint32,uint64,float32,float64]"))
+		assert.That(matcher.Cause(), is.EqualTo("expectedMax not one of [int,int8,int16,int32,int64,uint,uint8,uint16,uint32,uint64,float32,float64]"))
 	})
 
 	t.Run("nil_nil_nil", func(t *testing.T) {
@@ -640,7 +640,7 @@ func TestBetweenOrEqual(t *testing.T) {
 		matched := matcher.Matches(1)
 
 		assert.That(matched, is.False())
-		assert.That(matcher.Cause(), is.EqualTo("givenMin is <nil>"))
+		assert.That(matcher.Cause(), is.EqualTo("expectedMin is <nil>"))
 	})
 
 	t.Run("1_1_nil", func(t *testing.T) {
@@ -650,7 +650,7 @@ func TestBetweenOrEqual(t *testing.T) {
 		matched := matcher.Matches(1)
 
 		assert.That(matched, is.False())
-		assert.That(matcher.Cause(), is.EqualTo("givenMax is <nil>"))
+		assert.That(matcher.Cause(), is.EqualTo("expectedMax is <nil>"))
 	})
 
 	t.Run("int_int_float", func(t *testing.T) {
@@ -680,7 +680,7 @@ func TestBetweenOrEqual(t *testing.T) {
 		matched := matcher.Matches(1)
 
 		assert.That(matched, is.False())
-		assert.That(matcher.Cause(), is.EqualTo("givenMin int(4) must be <= givenMax int(2)"))
+		assert.That(matcher.Cause(), is.EqualTo("expectedMin int(4) must be <= expectedMax int(2)"))
 	})
 
 	t.Run("2_1_4", func(t *testing.T) {
@@ -716,22 +716,22 @@ func TestNotBetween(t *testing.T) {
 		assert.That(matcher.Cause(), is.EqualTo("actual not one of [int,int8,int16,int32,int64,uint,uint8,uint16,uint32,uint64,float32,float64]"))
 	})
 
-	t.Run("givenMin_unsupported", func(t *testing.T) {
+	t.Run("expectedMin_unsupported", func(t *testing.T) {
 		assert := hamcrest.NewAssertion(t)
 
 		matcher := is.NotBetween([1]int{1}, 2)
 		matched := matcher.Matches(1)
 		assert.That(matched, is.False())
-		assert.That(matcher.Cause(), is.EqualTo("givenMin not one of [int,int8,int16,int32,int64,uint,uint8,uint16,uint32,uint64,float32,float64]"))
+		assert.That(matcher.Cause(), is.EqualTo("expectedMin not one of [int,int8,int16,int32,int64,uint,uint8,uint16,uint32,uint64,float32,float64]"))
 	})
 
-	t.Run("givenMax_unsupported", func(t *testing.T) {
+	t.Run("expectedMax_unsupported", func(t *testing.T) {
 		assert := hamcrest.NewAssertion(t)
 
 		matcher := is.NotBetween(1, [1]int{1})
 		matched := matcher.Matches(1)
 		assert.That(matched, is.False())
-		assert.That(matcher.Cause(), is.EqualTo("givenMax not one of [int,int8,int16,int32,int64,uint,uint8,uint16,uint32,uint64,float32,float64]"))
+		assert.That(matcher.Cause(), is.EqualTo("expectedMax not one of [int,int8,int16,int32,int64,uint,uint8,uint16,uint32,uint64,float32,float64]"))
 	})
 
 	t.Run("nil_nil_nil", func(t *testing.T) {
@@ -760,7 +760,7 @@ func TestNotBetween(t *testing.T) {
 		matched := matcher.Matches(1)
 
 		assert.That(matched, is.False())
-		assert.That(matcher.Cause(), is.EqualTo("givenMin is <nil>"))
+		assert.That(matcher.Cause(), is.EqualTo("expectedMin is <nil>"))
 	})
 
 	t.Run("1_1_nil", func(t *testing.T) {
@@ -770,7 +770,7 @@ func TestNotBetween(t *testing.T) {
 		matched := matcher.Matches(1)
 
 		assert.That(matched, is.False())
-		assert.That(matcher.Cause(), is.EqualTo("givenMax is <nil>"))
+		assert.That(matcher.Cause(), is.EqualTo("expectedMax is <nil>"))
 	})
 
 	t.Run("int_int_float", func(t *testing.T) {
@@ -797,7 +797,7 @@ func TestNotBetween(t *testing.T) {
 		matched := matcher.Matches(1)
 
 		assert.That(matched, is.False())
-		assert.That(matcher.Cause(), is.EqualTo("givenMin int(4) must be <= givenMax int(2)"))
+		assert.That(matcher.Cause(), is.EqualTo("expectedMin int(4) must be <= expectedMax int(2)"))
 	})
 
 	t.Run("2_1_4", func(t *testing.T) {
@@ -835,22 +835,22 @@ func TestNotBetweenOrEqualOrEqual(t *testing.T) {
 		assert.That(matcher.Cause(), is.EqualTo("actual not one of [int,int8,int16,int32,int64,uint,uint8,uint16,uint32,uint64,float32,float64]"))
 	})
 
-	t.Run("givenMin_unsupported", func(t *testing.T) {
+	t.Run("expectedMin_unsupported", func(t *testing.T) {
 		assert := hamcrest.NewAssertion(t)
 
 		matcher := is.NotBetweenOrEqual([1]int{1}, 2)
 		matched := matcher.Matches(1)
 		assert.That(matched, is.False())
-		assert.That(matcher.Cause(), is.EqualTo("givenMin not one of [int,int8,int16,int32,int64,uint,uint8,uint16,uint32,uint64,float32,float64]"))
+		assert.That(matcher.Cause(), is.EqualTo("expectedMin not one of [int,int8,int16,int32,int64,uint,uint8,uint16,uint32,uint64,float32,float64]"))
 	})
 
-	t.Run("givenMax_unsupported", func(t *testing.T) {
+	t.Run("expectedMax_unsupported", func(t *testing.T) {
 		assert := hamcrest.NewAssertion(t)
 
 		matcher := is.NotBetweenOrEqual(1, [1]int{1})
 		matched := matcher.Matches(1)
 		assert.That(matched, is.False())
-		assert.That(matcher.Cause(), is.EqualTo("givenMax not one of [int,int8,int16,int32,int64,uint,uint8,uint16,uint32,uint64,float32,float64]"))
+		assert.That(matcher.Cause(), is.EqualTo("expectedMax not one of [int,int8,int16,int32,int64,uint,uint8,uint16,uint32,uint64,float32,float64]"))
 	})
 
 	t.Run("nil_nil_nil", func(t *testing.T) {
@@ -879,7 +879,7 @@ func TestNotBetweenOrEqualOrEqual(t *testing.T) {
 		matched := matcher.Matches(1)
 
 		assert.That(matched, is.False())
-		assert.That(matcher.Cause(), is.EqualTo("givenMin is <nil>"))
+		assert.That(matcher.Cause(), is.EqualTo("expectedMin is <nil>"))
 	})
 
 	t.Run("1_1_nil", func(t *testing.T) {
@@ -889,7 +889,7 @@ func TestNotBetweenOrEqualOrEqual(t *testing.T) {
 		matched := matcher.Matches(1)
 
 		assert.That(matched, is.False())
-		assert.That(matcher.Cause(), is.EqualTo("givenMax is <nil>"))
+		assert.That(matcher.Cause(), is.EqualTo("expectedMax is <nil>"))
 	})
 
 	t.Run("int_int_float", func(t *testing.T) {
@@ -916,7 +916,7 @@ func TestNotBetweenOrEqualOrEqual(t *testing.T) {
 		matched := matcher.Matches(1)
 
 		assert.That(matched, is.False())
-		assert.That(matcher.Cause(), is.EqualTo("givenMin int(4) must be <= givenMax int(2)"))
+		assert.That(matcher.Cause(), is.EqualTo("expectedMin int(4) must be <= expectedMax int(2)"))
 	})
 
 	t.Run("2_1_4", func(t *testing.T) {
@@ -960,13 +960,13 @@ func TestCloseTo(t *testing.T) {
 		assert.That(matcher.Cause(), is.EqualTo("actual not one of [float32,float64]"))
 	})
 
-	t.Run("given_unsupported", func(t *testing.T) {
+	t.Run("expected_unsupported", func(t *testing.T) {
 		assert := hamcrest.NewAssertion(t)
 
 		matcher := is.CloseTo("", 2.0)
 		matched := matcher.Matches(1.0)
 		assert.That(matched, is.False())
-		assert.That(matcher.Cause(), is.EqualTo("given not one of [float32,float64]"))
+		assert.That(matcher.Cause(), is.EqualTo("expected not one of [float32,float64]"))
 	})
 
 	t.Run("error_unsupported", func(t *testing.T) {
@@ -1004,7 +1004,7 @@ func TestCloseTo(t *testing.T) {
 		matched := matcher.Matches(1.0)
 
 		assert.That(matched, is.False())
-		assert.That(matcher.Cause(), is.EqualTo("given is <nil>"))
+		assert.That(matcher.Cause(), is.EqualTo("expected is <nil>"))
 	})
 
 	t.Run("1_1_nil", func(t *testing.T) {
@@ -1070,13 +1070,13 @@ func TestNotCloseTo(t *testing.T) {
 		assert.That(matcher.Cause(), is.EqualTo("actual not one of [float32,float64]"))
 	})
 
-	t.Run("given_unsupported", func(t *testing.T) {
+	t.Run("expected_unsupported", func(t *testing.T) {
 		assert := hamcrest.NewAssertion(t)
 
 		matcher := is.NotCloseTo("", 2.0)
 		matched := matcher.Matches(1.0)
 		assert.That(matched, is.False())
-		assert.That(matcher.Cause(), is.EqualTo("given not one of [float32,float64]"))
+		assert.That(matcher.Cause(), is.EqualTo("expected not one of [float32,float64]"))
 	})
 
 	t.Run("error_unsupported", func(t *testing.T) {
@@ -1114,7 +1114,7 @@ func TestNotCloseTo(t *testing.T) {
 		matched := matcher.Matches(1.0)
 
 		assert.That(matched, is.False())
-		assert.That(matcher.Cause(), is.EqualTo("given is <nil>"))
+		assert.That(matcher.Cause(), is.EqualTo("expected is <nil>"))
 	})
 
 	t.Run("1_1_nil", func(t *testing.T) {

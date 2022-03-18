@@ -28,7 +28,7 @@ func TestMatchingPattern(t *testing.T) {
 		matched := matcher.Matches(matchingString)
 
 		assert.That(matched, is.False())
-		assert.That(matcher.Cause(), is.EqualTo("given is <nil>"))
+		assert.That(matcher.Cause(), is.EqualTo("expected is <nil>"))
 	})
 
 	t.Run("int_pattern", func(t *testing.T) {
@@ -48,7 +48,7 @@ func TestMatchingPattern(t *testing.T) {
 		matched := matcher.Matches(matchingString)
 
 		assert.That(matched, is.False())
-		assert.That(matcher.Cause(), is.EqualTo("given not one of [string]"))
+		assert.That(matcher.Cause(), is.EqualTo("expected not one of [string]"))
 	})
 
 	t.Run("not_matching", func(t *testing.T) {
@@ -87,7 +87,7 @@ func TestNotMatchingPattern(t *testing.T) {
 		matched := matcher.Matches(matchingString)
 
 		assert.That(matched, is.False())
-		assert.That(matcher.Cause(), is.EqualTo("given is <nil>"))
+		assert.That(matcher.Cause(), is.EqualTo("expected is <nil>"))
 	})
 
 	t.Run("int_pattern", func(t *testing.T) {
@@ -107,7 +107,7 @@ func TestNotMatchingPattern(t *testing.T) {
 		matched := matcher.Matches(matchingString)
 
 		assert.That(matched, is.False())
-		assert.That(matcher.Cause(), is.EqualTo("given not one of [string]"))
+		assert.That(matcher.Cause(), is.EqualTo("expected not one of [string]"))
 	})
 
 	t.Run("not_matching", func(t *testing.T) {

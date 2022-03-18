@@ -11,12 +11,12 @@ func FormatTypeWithValue(v interface{}) string {
 	return fmt.Sprintf("%[1]T(%[1]v)", v)
 }
 
-func FormatTypes(op string, actual, given interface{}) string {
-	return fmt.Sprintf("%[1]T %s %[3]T", actual, op, given)
+func FormatTypes(op string, actual, expected interface{}) string {
+	return fmt.Sprintf("%[1]T %s %[3]T", actual, op, expected)
 }
 
-func FormatComparingIncompatibleTypes(actual, given interface{}) string {
-	return "try to compare incompatible types: " + FormatTypes(",", actual, given)
+func FormatComparingIncompatibleTypes(actual, expected interface{}) string {
+	return "try to compare incompatible types: " + FormatTypes(",", actual, expected)
 }
 
 func FormatUnsupportedVariable(name string, kinds *RestrictedToKinds) string {

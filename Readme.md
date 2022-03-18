@@ -38,7 +38,7 @@ assert.That(actual, is.False())
 
 assert.That(actual, is.Nil())
 assert.That(actual, is.NotNil())
-assert.That(actual, is.PointingTo(givenPtr))
+assert.That(actual, is.PointingTo(expectedPtr))
 ```
 
 ### Numeric 
@@ -118,13 +118,13 @@ assert.That(actual, is.NotOk())
 ```go
 assert := hamcrest.NewAssertion(t)
 
-assert.That(actual, is.Before(given))
-assert.That(actual, is.NotBefore(given))
-assert.That(actual, is.BeforeOrEqual(given))
+assert.That(actual, is.Before(expected))
+assert.That(actual, is.NotBefore(expected))
+assert.That(actual, is.BeforeOrEqual(expected))
 
-assert.That(actual, is.After(given))
-assert.That(actual, is.NotAfter(given))
-assert.That(actual, is.AfterOrEqual(given))
+assert.That(actual, is.After(expected))
+assert.That(actual, is.NotAfter(expected))
+assert.That(actual, is.AfterOrEqual(expected))
 
 ```
 
@@ -133,6 +133,6 @@ assert.That(actual, is.AfterOrEqual(given))
 ```go
 assert := hamcrest.NewAssertion(t)
 
-assert.That(actual, has.SameTypeAs(given))
-assert.That(actual, has.NotSameTypeAs(given))
+assert.That(actual, has.SameTypeAs(expected))
+assert.That(actual, has.NotSameTypeAs(expected))
 ```

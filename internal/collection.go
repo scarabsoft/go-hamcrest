@@ -26,8 +26,8 @@ func Length(actual interface{}) (int64, error) {
 	))
 }
 
-func HasItem(actual, given interface{}) (bool, error) {
-	if given == nil {
+func HasItem(actual, expected interface{}) (bool, error) {
+	if expected == nil {
 		actualValue := reflect.ValueOf(actual)
 		for i := 0; i < actualValue.Len(); i++ {
 			switch actualValue.Index(i).Kind() {
@@ -45,14 +45,14 @@ func HasItem(actual, given interface{}) (bool, error) {
 	if err != nil {
 		panic("was not able to resolve length of actual")
 	}
-	givenValue, actualValue := reflect.ValueOf(given), reflect.ValueOf(actual)
+	expectedValue, actualValue := reflect.ValueOf(expected), reflect.ValueOf(actual)
 
 	switch actualValue.Kind() {
 	case reflect.Ptr:
 		elem := actualValue.Elem()
 		for i := 0; i < int(length); i++ {
 			v := elem.Index(i)
-			if IsEqual(v.Interface(), givenValue.Interface()) {
+			if IsEqual(v.Interface(), expectedValue.Interface()) {
 				return true, nil
 			}
 		}
@@ -71,7 +71,7 @@ func HasItem(actual, given interface{}) (bool, error) {
 		for i := 0; i < int(length); i++ {
 			v := store.Index(i)
 			actualValue.Send(v)
-			if IsEqual(v.Interface(), givenValue.Interface()) {
+			if IsEqual(v.Interface(), expectedValue.Interface()) {
 				matched = true
 			}
 		}
@@ -79,7 +79,7 @@ func HasItem(actual, given interface{}) (bool, error) {
 
 	default:
 		for i := 0; i < int(length); i++ {
-			if IsEqual(actualValue.Index(i).Interface(), givenValue.Interface()) {
+			if IsEqual(actualValue.Index(i).Interface(), expectedValue.Interface()) {
 				return true, nil
 			}
 		}

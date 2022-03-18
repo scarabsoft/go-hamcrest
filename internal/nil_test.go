@@ -13,26 +13,26 @@ func (t *testImpl) test() {}
 
 func TestIsNil(t *testing.T) {
 	t.Run("nil_slice", func(t *testing.T) {
-		var givenNilSlice []string = nil
-		matches := IsNil(givenNilSlice)
+		var expectedNilSlice []string = nil
+		matches := IsNil(expectedNilSlice)
 		assertTrue(t, matches)
 	})
 
 	t.Run("not_nil_slice", func(t *testing.T) {
-		var givenNilSlice = make([]string, 0)
-		matches := IsNil(givenNilSlice)
+		var expectedNilSlice = make([]string, 0)
+		matches := IsNil(expectedNilSlice)
 		assertFalse(t, matches)
 	})
 
 	t.Run("nil_function", func(t *testing.T) {
-		var givenNilSlice func() = nil
-		matches := IsNil(givenNilSlice)
+		var expectedNilSlice func() = nil
+		matches := IsNil(expectedNilSlice)
 		assertTrue(t, matches)
 	})
 
 	t.Run("not_nil_function", func(t *testing.T) {
-		var givenNilSlice = func() {}
-		matches := IsNil(givenNilSlice)
+		var expectedNilSlice = func() {}
+		matches := IsNil(expectedNilSlice)
 		assertFalse(t, matches)
 	})
 

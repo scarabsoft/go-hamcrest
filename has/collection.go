@@ -19,14 +19,14 @@ func Length(length interface{}) matcher.Matcher {
 						reflect.Array, reflect.Chan, reflect.Map, reflect.String, reflect.Slice, reflect.Ptr),
 					),
 					func() matcher.MatchResult {
-						var givenLength int64
+						var expectedLength int64
 
 						lenValue := reflect.ValueOf(length)
 						switch lenValue.Kind() {
 						case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
-							givenLength = lenValue.Int()
+							expectedLength = lenValue.Int()
 						case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64:
-							givenLength = int64(lenValue.Uint())
+							expectedLength = int64(lenValue.Uint())
 						}
 
 						actualLength, err := internal.Length(actual)
@@ -34,24 +34,24 @@ func Length(length interface{}) matcher.Matcher {
 							return matcher.Failed(err.Error())
 						}
 
-						if actualLength == givenLength {
+						if actualLength == expectedLength {
 							return matcher.Matched()
 						}
 
-						return matcher.Failed(fmt.Sprintf("want length of %d; got %d", givenLength, actualLength))
+						return matcher.Failed(fmt.Sprintf("want length of %d; got %d", expectedLength, actualLength))
 					})
 		},
 	)
 }
 
-func Item(given interface{}) matcher.Matcher {
+func Item(expected interface{}) matcher.Matcher {
 	return matcher.New(
 		func(actual interface{}, chain matcher.Chain) matcher.Chain {
 			return chain.
 				Add(
 					matcher.FailIfIsNil("actual", actual),
 					func() matcher.MatchResult {
-						result, err := internal.HasItem(actual, given)
+						result, err := internal.HasItem(actual, expected)
 						if err != nil {
 							return matcher.Failed(err.Error())
 						}
@@ -59,7 +59,7 @@ func Item(given interface{}) matcher.Matcher {
 						if !result {
 							return matcher.Failed(fmt.Sprintf(
 								"want %s to be part of %s; but was not",
-								internal.FormatTypeWithValue(given),
+								internal.FormatTypeWithValue(expected),
 								internal.FormatTypeWithValue(actual),
 							))
 						}
@@ -70,14 +70,14 @@ func Item(given interface{}) matcher.Matcher {
 	)
 }
 
-func NotItem(given interface{}) matcher.Matcher {
+func NotItem(expected interface{}) matcher.Matcher {
 	return matcher.New(
 		func(actual interface{}, chain matcher.Chain) matcher.Chain {
 			return chain.
 				Add(
 					matcher.FailIfIsNil("actual", actual),
 					func() matcher.MatchResult {
-						result, err := internal.HasItem(actual, given)
+						result, err := internal.HasItem(actual, expected)
 						if err != nil {
 							return matcher.Failed(err.Error())
 						}
@@ -85,7 +85,7 @@ func NotItem(given interface{}) matcher.Matcher {
 						if result {
 							return matcher.Failed(fmt.Sprintf(
 								"want %s to not be part of %s; but was",
-								internal.FormatTypeWithValue(given),
+								internal.FormatTypeWithValue(expected),
 								internal.FormatTypeWithValue(actual),
 							))
 						}
@@ -95,15 +95,15 @@ func NotItem(given interface{}) matcher.Matcher {
 	)
 }
 
-func Items(given ...interface{}) matcher.Matcher {
-	return matcher.LoopAndApply(Item, given...)
+func Items(expected ...interface{}) matcher.Matcher {
+	return matcher.LoopAndApply(Item, expected...)
 }
 
-func NotItems(given ...interface{}) matcher.Matcher {
-	return matcher.LoopAndApply(NotItem, given...)
+func NotItems(expected ...interface{}) matcher.Matcher {
+	return matcher.LoopAndApply(NotItem, expected...)
 }
 
-func Key(given interface{}) matcher.Matcher {
+func Key(expected interface{}) matcher.Matcher {
 	return matcher.New(
 		func(actual interface{}, chain matcher.Chain) matcher.Chain {
 			return chain.
@@ -112,21 +112,21 @@ func Key(given interface{}) matcher.Matcher {
 					matcher.FailIfNotRestrictedType("actual", actual, internal.NewRestrictedToKind(reflect.Map)),
 					func() matcher.MatchResult {
 						actualValue := reflect.ValueOf(actual)
-						givenValue := reflect.ValueOf(given)
+						expectedValue := reflect.ValueOf(expected)
 
-						if reflect.TypeOf(actual).Key() != reflect.TypeOf(given) {
+						if reflect.TypeOf(actual).Key() != reflect.TypeOf(expected) {
 							return matcher.Failed(fmt.Sprintf(
 								"want %s to be key of %s; but was not",
-								internal.FormatTypeWithValue(given),
+								internal.FormatTypeWithValue(expected),
 								internal.FormatTypeWithValue(actual),
 							))
 						}
 
-						valueVal := actualValue.MapIndex(givenValue)
+						valueVal := actualValue.MapIndex(expectedValue)
 						if valueVal.Kind().String() == "invalid" {
 							return matcher.Failed(fmt.Sprintf(
 								"want %s to be key of %s; but was not",
-								internal.FormatTypeWithValue(given),
+								internal.FormatTypeWithValue(expected),
 								internal.FormatTypeWithValue(actual),
 							))
 						}
@@ -136,7 +136,7 @@ func Key(given interface{}) matcher.Matcher {
 	)
 }
 
-func NotKey(given interface{}) matcher.Matcher {
+func NotKey(expected interface{}) matcher.Matcher {
 	return matcher.New(
 		func(actual interface{}, chain matcher.Chain) matcher.Chain {
 			return chain.
@@ -146,10 +146,10 @@ func NotKey(given interface{}) matcher.Matcher {
 					func() matcher.MatchResult {
 						actualValue := reflect.ValueOf(actual)
 						for _, key := range actualValue.MapKeys() {
-							if internal.IsEqual(key.Interface(), given) {
+							if internal.IsEqual(key.Interface(), expected) {
 								return matcher.Failed(fmt.Sprintf(
 									"want %s not to be key of %s; but was",
-									internal.FormatTypeWithValue(given),
+									internal.FormatTypeWithValue(expected),
 									internal.FormatTypeWithValue(actual),
 								))
 							}
@@ -160,10 +160,10 @@ func NotKey(given interface{}) matcher.Matcher {
 	)
 }
 
-func Keys(given ...interface{}) matcher.Matcher {
-	return matcher.LoopAndApply(Key, given...)
+func Keys(expected ...interface{}) matcher.Matcher {
+	return matcher.LoopAndApply(Key, expected...)
 }
 
-func NotKeys(given ...interface{}) matcher.Matcher {
-	return matcher.LoopAndApply(NotKey, given...)
+func NotKeys(expected ...interface{}) matcher.Matcher {
+	return matcher.LoopAndApply(NotKey, expected...)
 }

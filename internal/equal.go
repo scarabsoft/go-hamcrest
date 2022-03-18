@@ -2,20 +2,20 @@ package internal
 
 import "reflect"
 
-func IsEqual(actual, given interface{}) bool {
-	if IsNil(actual) && IsNil(given) {
+func IsEqual(actual, expected interface{}) bool {
+	if IsNil(actual) && IsNil(expected) {
 		return true
 	}
 
-	if IsNil(actual) || IsNil(given) {
+	if IsNil(actual) || IsNil(expected) {
 		return false
 	}
 
-	if reflect.DeepEqual(actual, given) {
+	if reflect.DeepEqual(actual, expected) {
 		return true
 	}
 
 	aValue := reflect.ValueOf(actual)
-	bValue := reflect.ValueOf(given)
+	bValue := reflect.ValueOf(expected)
 	return aValue == bValue
 }
